@@ -75,5 +75,7 @@ Down(Little) Flipper
 	310, 657
 	*/
 
-
+	//Engranatge Center
+	//236,237
+	//Radi 26
 };

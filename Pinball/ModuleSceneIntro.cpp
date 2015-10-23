@@ -211,7 +211,7 @@ bool ModuleSceneIntro::Start()
 		432, 431
 	
 	};
-
+	 
 	App->physics->CreateChain(x, y, R_Obstacle_Outer, 14);
 	
 	int R_Obstacle_Outest[10] = {
@@ -263,6 +263,9 @@ bool ModuleSceneIntro::Start()
 		465, 376
 	};
 	App->physics->CreateChain(x, y, Left_bar, 8);
+
+	//Create Gear
+	App->physics->CreateCircle(236, 237, 26.0f);
 	return ret;
 }
 
