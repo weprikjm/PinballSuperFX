@@ -41,7 +41,11 @@ public:
 	 //int table_vertex[];
 	PhysBody* table;
 
-	
+	//R_Up_Flipper coords;
+	//335, 586
+	/*R_Down_Flipper coords
+	310, 657
+	*/
 
 
 };
