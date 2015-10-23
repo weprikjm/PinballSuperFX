@@ -263,8 +263,6 @@ bool ModuleSceneIntro::Start()
 		465, 376
 	};
 	App->physics->CreateChain(x, y, Left_bar, 8);
-	//Create Flippers
-	335; 586;
 	return ret;
 }
 
