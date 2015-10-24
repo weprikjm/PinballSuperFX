@@ -29,7 +29,7 @@ bool ModuleSceneIntro::Start()
 	box = App->textures->Load("pinball/crate.png");
 	rick = App->textures->Load("pinball/rick_head.png");
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
-	pinball = App->textures->Load("pinball/Capture.png");
+	//pinball = App->textures->Load("pinball/Capture.png");
 	
 	
 
@@ -264,8 +264,8 @@ bool ModuleSceneIntro::Start()
 	};
 	App->physics->CreateChain(x, y, Left_bar, 8);
 
-	//Create Gear
-	App->physics->CreateCircle(236, 237, 26.0f);
+	
+	App->physics->CreateGear(237, 237, 26.0f);
 	return ret;
 }
 

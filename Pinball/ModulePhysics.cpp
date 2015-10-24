@@ -35,6 +35,7 @@ bool ModulePhysics::Start()
 	b2BodyDef bd;
 	ground = world->CreateBody(&bd);
 
+
 	// big static circle as "ground" in the middle of the screen
 	int x = SCREEN_WIDTH / 2;
 	int y = SCREEN_HEIGHT /2;
@@ -52,6 +53,7 @@ bool ModulePhysics::Start()
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
 	big_ball->CreateFixture(&fixture);
+
 
 	return true;
 }
@@ -158,8 +160,53 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 	return pbody;
 }
 
+PhysBody* ModulePhysics::CreateGear(int x, int y, float radius)
+{
+	b2BodyDef body;
+	body.type = b2_dynamicBody;
+	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
+	b2Body* b = world->CreateBody(&body);
 
+	b2CircleShape shape;
+	shape.m_radius = PIXEL_TO_METERS(radius);
+	
+	b2FixtureDef fixture;
+	fixture.shape = &shape;
+	fixture.density = 1.0f;
+
+	b->CreateFixture(&fixture);
+
+	//Create background
+	b2BodyDef body_g;
+	body.type = b2_staticBody;
+	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+
+	b2Body* b_g = world->CreateBody(&body_g);
+	b2PolygonShape box;
+	box.SetAsBox(PIXEL_TO_METERS(3), PIXEL_TO_METERS(3));
+
+	b2FixtureDef fixture_g;
+	fixture_g.shape = &box;
+	fixture_g.density = 1.0f;
+
+	b->CreateFixture(&fixture_g);
+
+	b2Vec2 anchor(x, y);
+	b2Vec2 anchor_g(1, 1);
+	b2DistanceJointDef dJointDef;
+	dJointDef.Initialize(b_g, b, anchor, anchor);
+	dJointDef.collideConnected = true;
+	b2RevoluteJointDef jointDef;
+	jointDef.Initialize(b_g, b, anchor);
+	
+
+	PhysBody* pbody = new PhysBody();
+	pbody->body = b;
+	b->SetUserData(pbody);
+	pbody->width = pbody->height = radius;
+	return pbody;
+}
 
 
 
