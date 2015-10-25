@@ -221,7 +221,8 @@ b2RevoluteJoint* ModulePhysics::CreateFlipper(int x, int y, int* anchor, int siz
 	revoluteJoint.localAnchorA.Set(PIXEL_TO_METERS(167),PIXEL_TO_METERS(585));
 	revoluteJoint.localAnchorB.Set(PIXEL_TO_METERS(-10), PIXEL_TO_METERS(-10));
 	//revoluteJoint.referenceAngle = 0;
-	b2RevoluteJoint* joint = (b2RevoluteJoint*)world->CreateJoint(&revoluteJoint);
+	b2RevoluteJoint* joint = (b2RevoluteJoint*)world->CreateJoint(&revoluteJoint);
+
 
 	return joint;
 }
@@ -240,7 +241,7 @@ PhysBody* ModulePhysics::CreateGear(int x, int y, float radius)
 	shape.m_radius = PIXEL_TO_METERS(radius);*/
 	
 	b2PolygonShape shape;
-	shape.SetAsBox(PIXEL_TO_METERS(20), PIXEL_TO_METERS(20));
+	shape.SetAsBox(PIXEL_TO_METERS(35), PIXEL_TO_METERS(35));
 
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
@@ -248,14 +249,17 @@ PhysBody* ModulePhysics::CreateGear(int x, int y, float radius)
 
 	b->CreateFixture(&fixture);
 	b->SetGravityScale(0);
-//Create Pin
+
+	//Create Pin
 	b2BodyDef body_g;
-	body_g.type = b2_dynamicBody;
+	body_g.type = b2_staticBody;
+	int x_g = x - 15;
+	int y_g = y - 60;
 	body_g.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b_g = world->CreateBody(&body_g);
-	b2CircleShape box;
-	box.m_radius = PIXEL_TO_METERS(13);
+	b2PolygonShape box;
+	box.SetAsBox(PIXEL_TO_METERS(13), PIXEL_TO_METERS(13));
 
 	b2FixtureDef fixture_g;
 	fixture_g.shape = &box;
@@ -265,13 +269,16 @@ PhysBody* ModulePhysics::CreateGear(int x, int y, float radius)
 	
 	
 	b_g->SetGravityScale(0);
-	b2Vec2 anchor(x, y);
-	b2Vec2 anchor_g(202, 202);
-	
-	/*b2DistanceJointDef dJointDef;
-	dJointDef.Initialize(b, b_g, anchor, anchor_g);
-	dJointDef.collideConnected = true;*/
 
+	
+	b2DistanceJointDef dJointDef;
+	dJointDef.bodyB = b;
+	dJointDef.bodyA = b_g;
+	dJointDef.Initialize(b, b_g, b->GetWorldCenter(), b_g->GetWorldCenter());
+	dJointDef.collideConnected =false; 
+
+	b2DistanceJoint* d_joint = (b2DistanceJoint*)world->CreateJoint(&dJointDef);
+	
 	b2RevoluteJointDef jointDef;
 	jointDef.bodyB = b;
 	jointDef.bodyA = b_g;
@@ -280,7 +287,7 @@ PhysBody* ModulePhysics::CreateGear(int x, int y, float radius)
 
 	//jointDef.enableLimit = true;
 	jointDef.maxMotorTorque = 10.0f;
-	jointDef.motorSpeed = 0.0f;
+	jointDef.motorSpeed = -50.0f;
 	jointDef.enableMotor = true;
 
 	b2RevoluteJoint* joint = (b2RevoluteJoint*)world->CreateJoint(&jointDef);
