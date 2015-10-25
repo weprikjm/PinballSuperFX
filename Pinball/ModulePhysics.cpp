@@ -56,7 +56,7 @@ bool ModulePhysics::Start()
 	return true;
 }
 
-// 
+ 
 update_status ModulePhysics::PreUpdate()
 {
 	world->Step(1.0f / 60.0f, 6, 2);
@@ -202,6 +202,73 @@ b2RevoluteJoint* ModulePhysics::CreateFlipper(int x, int y, PhysBody* shape, Phy
 	b2RevoluteJoint* joint = (b2RevoluteJoint*)world->CreateJoint(&revoluteJoint);
 
 	return joint;
+}
+
+PhysBody* ModulePhysics::CreateGear(int x, int y, float radius)
+{
+// Create sphere
+	b2BodyDef body;
+	body.type = b2_dynamicBody;
+	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+
+	b2Body* b = world->CreateBody(&body);
+
+
+	/*b2CircleShape shape;
+	shape.m_radius = PIXEL_TO_METERS(radius);*/
+	
+	b2PolygonShape shape;
+	shape.SetAsBox(PIXEL_TO_METERS(20), PIXEL_TO_METERS(20));
+
+	b2FixtureDef fixture;
+	fixture.shape = &shape;
+	fixture.density = 1.0f;
+
+	b->CreateFixture(&fixture);
+	b->SetGravityScale(0);
+//Create Pin
+	b2BodyDef body_g;
+	body_g.type = b2_dynamicBody;
+	body_g.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+
+	b2Body* b_g = world->CreateBody(&body_g);
+	b2CircleShape box;
+	box.m_radius = PIXEL_TO_METERS(13);
+
+	b2FixtureDef fixture_g;
+	fixture_g.shape = &box;
+	fixture_g.density = 1.0f;
+
+	b_g->CreateFixture(&fixture_g);
+	
+	
+	b_g->SetGravityScale(0);
+	b2Vec2 anchor(x, y);
+	b2Vec2 anchor_g(202, 202);
+	
+	/*b2DistanceJointDef dJointDef;
+	dJointDef.Initialize(b, b_g, anchor, anchor_g);
+	dJointDef.collideConnected = true;*/
+
+	b2RevoluteJointDef jointDef;
+	jointDef.bodyB = b;
+	jointDef.bodyA = b_g;
+	jointDef.Initialize(b, b_g, b->GetWorldCenter());
+	jointDef.collideConnected = true;
+
+	//jointDef.enableLimit = true;
+	jointDef.maxMotorTorque = 10.0f;
+	jointDef.motorSpeed = 0.0f;
+	jointDef.enableMotor = true;
+
+	b2RevoluteJoint* joint = (b2RevoluteJoint*)world->CreateJoint(&jointDef);
+	
+
+	PhysBody* pbody = new PhysBody();
+	pbody->body = b_g;
+	b_g->SetUserData(pbody);
+	pbody->width = pbody->height = radius;
+	return pbody;
 
 }
 
@@ -242,7 +309,7 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size)
 	return pbody;
 }
 
-// 
+
 update_status ModulePhysics::PostUpdate()
 {
 	b2Vec2 mouse_position;

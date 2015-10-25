@@ -29,7 +29,7 @@ bool ModuleSceneIntro::Start()
 	box = App->textures->Load("pinball/crate.png");
 	rick = App->textures->Load("pinball/rick_head.png");
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
-	pinball = App->textures->Load("pinball/Capture.png");
+	//pinball = App->textures->Load("pinball/Capture.png");
 	
 	ret = LoadCollisionMap();
 
@@ -216,7 +216,7 @@ bool ModuleSceneIntro::LoadCollisionMap()
 		432, 431
 
 	};
-
+	 
 	App->physics->CreateChain(x, y, R_Obstacle_Outer, 14);
 
 	int R_Obstacle_Outest[10] = {
@@ -333,7 +333,12 @@ bool ModuleSceneIntro::LoadCollisionMap()
 
 
 
-return ret;
+
+
+	
+	App->physics->CreateGear(237, 237, 26.0f);
+	return ret;
+
 }
 
 
