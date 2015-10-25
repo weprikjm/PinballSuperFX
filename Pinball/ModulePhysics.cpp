@@ -159,7 +159,51 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 }
 
 
+b2RevoluteJoint* ModulePhysics::CreateFlipper(int x, int y, PhysBody* shape, PhysBody* anchor)
+{
+	//Create Flippers
 
+
+
+
+	int axisLeftFlipper[2] = {
+		144, 582
+	};
+
+
+
+
+	b2Vec2	rightFlipperPosition;
+	b2Vec2	leftFlipperPosition;
+
+	leftFlipperPosition.Set(144, 582);
+	rightFlipperPosition.Set(310, 657);
+
+	b2RevoluteJointDef revoluteJoint;
+	b2FixtureDef fixtureDef;
+	fixtureDef.density = 1;
+
+
+
+
+	
+	revoluteJoint.bodyA = shape->body;
+	revoluteJoint.bodyB = anchor->body;
+	revoluteJoint.collideConnected = true;
+	revoluteJoint.enableLimit = true;
+	revoluteJoint.lowerAngle = -45;
+	revoluteJoint.upperAngle = 45;
+	revoluteJoint.enableMotor = true;
+	revoluteJoint.motorSpeed = 20;
+	revoluteJoint.maxMotorTorque = 15;
+
+
+	revoluteJoint.localAnchorA.Set(anchor->body->GetPosition().x, anchor->body->GetPosition().y);
+	b2RevoluteJoint* joint = (b2RevoluteJoint*)world->CreateJoint(&revoluteJoint);
+
+	return joint;
+
+}
 
 
 

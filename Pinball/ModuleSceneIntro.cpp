@@ -31,15 +31,20 @@ bool ModuleSceneIntro::Start()
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 	pinball = App->textures->Load("pinball/Capture.png");
 	
-	
+	ret = LoadCollisionMap();
 
+	return ret;
+}
+
+bool ModuleSceneIntro::LoadCollisionMap()
+{
 	sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50);
-
+	bool ret = true;
 	//Creating Pinball Table
 	/*
 	table = (App->physics->CreateChain(0, 0, table_array, SIZE));
 	*/
-	
+
 	int OutestEdge[152] = {
 		506, 143,
 		498, 129,
@@ -119,7 +124,7 @@ bool ModuleSceneIntro::Start()
 		506, 121
 	};
 	int x, y;
-	
+
 	x = 0;
 	y = 0;
 
@@ -135,7 +140,7 @@ bool ModuleSceneIntro::Start()
 
 
 	board.add(App->physics->CreateChain(x, y, tinyLauncherCube, 8));
-	
+
 	int tinyLauncherCube2[8] = {
 		508, 687,
 		497, 687,
@@ -198,7 +203,7 @@ bool ModuleSceneIntro::Start()
 		403, 532,
 		342, 565
 	};
-	
+
 	App->physics->CreateChain(x, y, R_Obstacle_Inner, 14);
 
 	int R_Obstacle_Outer[14] = {
@@ -209,11 +214,11 @@ bool ModuleSceneIntro::Start()
 		308, 635,
 		432, 566,
 		432, 431
-	
+
 	};
 
 	App->physics->CreateChain(x, y, R_Obstacle_Outer, 14);
-	
+
 	int R_Obstacle_Outest[10] = {
 		325, 678,
 		329, 687,
@@ -224,7 +229,7 @@ bool ModuleSceneIntro::Start()
 
 	App->physics->CreateChain(x, y, R_Obstacle_Outest, 10);
 
-	
+
 	int L_Obstacle_Innest[20] = {
 		134, 484,
 		129, 476,
@@ -263,10 +268,90 @@ bool ModuleSceneIntro::Start()
 		465, 376
 	};
 	App->physics->CreateChain(x, y, Left_bar, 8);
-	//Create Flippers
-	335; 586;
-	return ret;
+
+
+
+
+	//Flippers
+	//Left Flipper
+
+	int anchorLeftFlipper[8] = {
+		144, 572,
+		134, 585,
+		145, 590,
+		155, 577
+	};
+
+	PhysBody* b1 = NULL;
+	b1 = App->physics->CreateChain(x, y, anchorLeftFlipper, 8);
+
+
+
+	int LeftFlipper[26] = {
+		147, 575,
+		141, 584,
+		143, 589,
+		147, 594,
+		154, 598,
+		163, 602,
+		170, 604,
+		178, 607,
+		185, 609,
+		191, 612,
+		173, 593,
+		163, 585,
+		153, 579
+	};
+
+	PhysBody* b3;
+	b3 = App->physics->CreateChain(x, y, LeftFlipper, 26);
+
+
+
+
+
+
+	b2RevoluteJoint* LeftFlipperBody = App->physics->CreateFlipper(x,y, b3, b1);
+
+	/*
+		localAnchorA - the point in body A around which it will rotate
+		localAnchorB - the point in body B around which it will rotate
+		referenceAngle - an angle between bodies considered to be zero for the joint angle
+		enableLimit - whether the joint limits will be active
+		lowerAngle - angle for the lower limit
+		upperAngle - angle for the upper limit
+		enableMotor - whether the joint motor will be active
+		motorSpeed - the target speed of the joint motor
+		maxMotorTorque - the maximum allowable torque the motor can use
+
+		*/
+
+
+	//RightFlipper
+
+
+
+
+
+return ret;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Load assets
 bool ModuleSceneIntro::CleanUp()
@@ -357,6 +442,23 @@ update_status ModuleSceneIntro::Update()
 		c->data->GetPosition(x, y);
 		if(c->data->Contains(App->input->GetMouseX(), App->input->GetMouseY()))
 			App->renderer->Blit(circle, x, y, NULL, 1.0f, c->data->GetRotation());
+		c = c->next;
+	}
+
+	/*Flipper draw*/
+	c = flippers.getFirst();
+
+	while (c != NULL)
+	{
+		int x, y;
+		c->data->GetPosition(x, y);
+		App->renderer->Blit(NULL, x, y, NULL, 1.0f, c->data->GetRotation());
+		if (ray_on)
+		{
+			int hit = c->data->RayCast(ray.x, ray.y, mouse.x, mouse.y, normal.x, normal.y);
+			if (hit >= 0)
+				ray_hit = hit;
+		}
 		c = c->next;
 	}
 

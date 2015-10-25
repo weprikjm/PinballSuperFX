@@ -16,12 +16,13 @@ public:
 	update_status Update();
 	bool CleanUp();
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
-
+	bool LoadCollisionMap();
 public:
 	p2List<PhysBody*> circles;
 	p2List<PhysBody*> boxes;
 	p2List<PhysBody*> ricks;
 	p2List<PhysBody*> board;
+	p2List<PhysBody*> flippers;
 
 
 	PhysBody* sensor;
@@ -31,6 +32,8 @@ public:
 	SDL_Texture* box;
 	SDL_Texture* rick;
 	SDL_Texture* pinball;
+
+
 
 
 	uint bonus_fx;
