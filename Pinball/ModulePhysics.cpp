@@ -159,46 +159,68 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 }
 
 
-b2RevoluteJoint* ModulePhysics::CreateFlipper(int x, int y, PhysBody* shape, PhysBody* anchor)
+b2RevoluteJoint* ModulePhysics::CreateFlipper(int x, int y, int* anchor, int sizeAnchor, int* shape, int sizeShape)
 {
 	//Create Flippers
 
 
 
-
-	int axisLeftFlipper[2] = {
-		144, 582
-	};
-
-
-
-
-	b2Vec2	rightFlipperPosition;
+	//b2Vec2	rightFlipperPosition;
 	b2Vec2	leftFlipperPosition;
 
 	leftFlipperPosition.Set(144, 582);
-	rightFlipperPosition.Set(310, 657);
-
-	b2RevoluteJointDef revoluteJoint;
-	b2FixtureDef fixtureDef;
-	fixtureDef.density = 1;
-
-
-
+	//rightFlipperPosition.Set(310, 657);
 
 	
-	revoluteJoint.bodyA = shape->body;
-	revoluteJoint.bodyB = anchor->body;
+	b2FixtureDef fixtureDef;
+	fixtureDef.density = 0;
+
+
+	//b2BodyDef body1;
+	//body1.type = b2_dynamicBody;
+	//body1.position.Set(PIXEL_TO_METERS(144), PIXEL_TO_METERS(575));
+
+	b2BodyDef body2;
+	body2.type = b2_dynamicBody;
+	body2.position.Set(PIXEL_TO_METERS(200), PIXEL_TO_METERS(580));
+	
+
+	//b2PolygonShape shape1;
+	//shape1.SetAsBox(PIXEL_TO_METERS(10),PIXEL_TO_METERS(10));
+	//b2FixtureDef fixture1;
+	//fixture1.density = 1;
+	//fixture1.shape = &shape1;
+
+
+	//b2Body* b1 = world->CreateBody(&body1);
+	//b1->CreateFixture(&fixture1);
+
+
+
+	b2PolygonShape shape2;
+	shape2.SetAsBox(PIXEL_TO_METERS(25), PIXEL_TO_METERS(5));
+	b2FixtureDef fixture2;
+	fixture2.density = 1;
+	fixture2.shape = &shape2;
+	
+
+	b2Body* b2 = world->CreateBody(&body2);
+	b2->CreateFixture(&fixture2);
+
+	
+	b2RevoluteJointDef revoluteJoint;
+	revoluteJoint.bodyA = ground;
+	revoluteJoint.bodyB = b2;
 	revoluteJoint.collideConnected = true;
 	revoluteJoint.enableLimit = true;
-	revoluteJoint.lowerAngle = -45;
-	revoluteJoint.upperAngle = 45;
-	revoluteJoint.enableMotor = true;
-	revoluteJoint.motorSpeed = 20;
-	revoluteJoint.maxMotorTorque = 15;
+	revoluteJoint.lowerAngle = -0.16 * b2_pi;
+	revoluteJoint.upperAngle = 0.16 * b2_pi;
 
 
-	revoluteJoint.localAnchorA.Set(anchor->body->GetPosition().x, anchor->body->GetPosition().y);
+
+	revoluteJoint.localAnchorA.Set(PIXEL_TO_METERS(167),PIXEL_TO_METERS(585));
+	revoluteJoint.localAnchorB.Set(PIXEL_TO_METERS(-10), PIXEL_TO_METERS(-10));
+	//revoluteJoint.referenceAngle = 0;
 	b2RevoluteJoint* joint = (b2RevoluteJoint*)world->CreateJoint(&revoluteJoint);
 
 	return joint;
@@ -384,11 +406,59 @@ update_status ModulePhysics::PostUpdate()
 				b2Vec2 v1, v2;
 
 				v1 = b->GetWorldPoint(shape->m_vertex0);
-				v1 = b->GetWorldPoint(shape->m_vertex1);
+				v2 = b->GetWorldPoint(shape->m_vertex1);
 				App->renderer->DrawLine(METERS_TO_PIXELS(v1.x), METERS_TO_PIXELS(v1.y), METERS_TO_PIXELS(v2.x), METERS_TO_PIXELS(v2.y), 100, 100, 255);
 			}
 			break;
 			}
+
+
+//Joint render
+
+			/*
+
+			for (b2Joint* b = world->GetJointList(); b; b = b->GetNext())
+			{
+				for (b2Fixture* f1 = b->GetBodyA()->GetFixtureList(); f1; f1 = f1->GetNext())
+				{
+					b2ChainShape* shape1 = (b2ChainShape*)f1->GetShape();
+					b2Vec2 prev, v;
+
+					for (int32 i = 0; i < shape1->m_count; ++i)
+					{
+						v = b->GetBodyA()->GetWorldPoint(shape1->m_vertices[i]);
+						if (i > 0)
+							App->renderer->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 100, 255, 100);
+						prev = v;
+					}
+
+				}*/
+				/*
+				for (b2Fixture* f2 = b->GetBodyA()->GetFixtureList(); f2; f2 = f2->GetNext())
+				{
+					b2ChainShape* shape = (b2ChainShape*)f->GetShape();
+					b2Vec2 prev, v;
+
+					for (int32 i = 0; i < shape->m_count; ++i)
+					{
+						v = b->GetBodyB()->GetWorldPoint(shape->m_vertices[i]);
+						if (i > 0)
+							App->renderer->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 100, 255, 100);
+						prev = v;
+					}
+
+				}
+
+				
+
+			
+
+			
+
+			}
+			
+			*/
+
 
 			// TODO 1: If mouse button 1 is pressed ...
 			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)

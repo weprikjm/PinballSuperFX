@@ -275,15 +275,14 @@ bool ModuleSceneIntro::LoadCollisionMap()
 	//Flippers
 	//Left Flipper
 
+
+
 	int anchorLeftFlipper[8] = {
 		144, 572,
 		134, 585,
 		145, 590,
 		155, 577
 	};
-
-	PhysBody* b1 = NULL;
-	b1 = App->physics->CreateChain(x, y, anchorLeftFlipper, 8);
 
 
 
@@ -303,28 +302,14 @@ bool ModuleSceneIntro::LoadCollisionMap()
 		153, 579
 	};
 
-	PhysBody* b3;
-	b3 = App->physics->CreateChain(x, y, LeftFlipper, 26);
 
 
 
 
+	b2RevoluteJoint* LeftFlipperBody = App->physics->CreateFlipper(x,y, anchorLeftFlipper, 8, LeftFlipper, 26);
 
 
-	b2RevoluteJoint* LeftFlipperBody = App->physics->CreateFlipper(x,y, b3, b1);
 
-	/*
-		localAnchorA - the point in body A around which it will rotate
-		localAnchorB - the point in body B around which it will rotate
-		referenceAngle - an angle between bodies considered to be zero for the joint angle
-		enableLimit - whether the joint limits will be active
-		lowerAngle - angle for the lower limit
-		upperAngle - angle for the upper limit
-		enableMotor - whether the joint motor will be active
-		motorSpeed - the target speed of the joint motor
-		maxMotorTorque - the maximum allowable torque the motor can use
-
-		*/
 
 
 	//RightFlipper
@@ -337,6 +322,7 @@ bool ModuleSceneIntro::LoadCollisionMap()
 
 	
 	App->physics->CreateGear(237, 237, 26.0f);
+
 	return ret;
 
 }
