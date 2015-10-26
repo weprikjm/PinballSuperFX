@@ -315,10 +315,33 @@ bool ModuleSceneIntro::LoadCollisionMap()
 	//RightFlipper
 
 
+	int anchorRightFlipper[8] = {
+		344, 572,
+		334, 585,
+		345, 590,
+		355, 577
+	};
 
 
 
+	int RightFlipper[26] = {
+		347, 575,
+		341, 584,
+		343, 589,
+		347, 594,
+		354, 598,
+		363, 602,
+		370, 604,
+		378, 607,
+		385, 609,
+		391, 612,
+		373, 593,
+		363, 585,
+		353, 579
+	};
 
+
+	b2RevoluteJoint* RightFlipperBody = App->physics->CreateFlipper(x, y, anchorRightFlipper, 8, RightFlipper, 26);
 
 	
 	App->physics->CreateGear(237, 237, 26.0f);
