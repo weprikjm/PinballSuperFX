@@ -53,6 +53,26 @@ bool ModulePhysics::Start()
 	fixture.shape = &shape;
 	big_ball->CreateFixture(&fixture);
 
+	//Create box
+
+	int x_b = 490;
+	int y_b = 722;
+
+	b2BodyDef dock;
+	dock.type = b2_kinematicBody;
+	dock.position.Set(PIXEL_TO_METERS(x_b), PIXEL_TO_METERS(y_b));
+
+	b2Body* dock_body = world->CreateBody(&dock);
+
+	b2PolygonShape shape_d;
+	shape_d.SetAsBox(PIXEL_TO_METERS(9) * 0.5f, PIXEL_TO_METERS(67) * 0.5f);
+
+	b2FixtureDef fixture_d;
+	fixture_d.shape = &shape_d;
+	dock_body->CreateFixture(&fixture_d);
+
+	//Create Bottom
+	
 	return true;
 }
 
@@ -100,10 +120,23 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height)
+PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, int type)
 {
 	b2BodyDef body;
-	body.type = b2_dynamicBody;
+	switch (type)
+	{
+	case 1:
+		body.type = b2_kinematicBody;
+		break;
+	case -1:
+		body.type = b2_staticBody;
+		break;
+	default:	
+		case 0:
+			body.type = b2_dynamicBody;
+			break;
+		break;
+	}
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);
@@ -121,6 +154,7 @@ PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height)
 	b->SetUserData(pbody);
 	pbody->width = width * 0.5f;
 	pbody->height = height * 0.5f;
+
 
 	return pbody;
 }
@@ -280,7 +314,7 @@ PhysBody* ModulePhysics::CreateGear(int x, int y, float radius)
 	jointDef.collideConnected = true;
 
 	//jointDef.enableLimit = true;
-	jointDef.maxMotorTorque = 0.32f;
+	jointDef.maxMotorTorque = 0.12f;
 	jointDef.motorSpeed = 0.0f;
 	jointDef.enableMotor = true;
 
@@ -331,6 +365,8 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size)
 
 	return pbody;
 }
+
+
 
 
 update_status ModulePhysics::PostUpdate()
