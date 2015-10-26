@@ -298,23 +298,22 @@ PhysBody* ModulePhysics::CreateGear(int x, int y, float radius)
 	
 	b_g->SetGravityScale(0);
 
-	
-	b2DistanceJointDef dJointDef;
+	/*b2DistanceJointDef dJointDef;
 	dJointDef.bodyB = b;
 	dJointDef.bodyA = b_g;
 	dJointDef.Initialize(b, b_g, b->GetWorldCenter(), b_g->GetWorldCenter());
 	dJointDef.collideConnected =false; 
 
-	b2DistanceJoint* d_joint = (b2DistanceJoint*)world->CreateJoint(&dJointDef);
+	b2DistanceJoint* d_joint = (b2DistanceJoint*)world->CreateJoint(&dJointDef);*/
 	
 	b2RevoluteJointDef jointDef;
 	jointDef.bodyB = b;
 	jointDef.bodyA = b_g;
 	jointDef.Initialize(b, b_g, b->GetWorldCenter());
-	jointDef.collideConnected = true;
+	jointDef.collideConnected = false;
 
 	//jointDef.enableLimit = true;
-	jointDef.maxMotorTorque = 0.12f;
+	jointDef.maxMotorTorque = 0.1f;
 	jointDef.motorSpeed = 0.0f;
 	jointDef.enableMotor = true;
 
