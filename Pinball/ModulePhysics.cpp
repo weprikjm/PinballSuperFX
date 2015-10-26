@@ -76,12 +76,6 @@ update_status ModulePhysics::PreUpdate()
 }
 
 
-
-
-
-
-
-
 PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
 {
 	b2BodyDef body;
@@ -286,8 +280,8 @@ PhysBody* ModulePhysics::CreateGear(int x, int y, float radius)
 	jointDef.collideConnected = true;
 
 	//jointDef.enableLimit = true;
-	jointDef.maxMotorTorque = 10.0f;
-	jointDef.motorSpeed = -50.0f;
+	jointDef.maxMotorTorque = 0.32f;
+	jointDef.motorSpeed = 0.0f;
 	jointDef.enableMotor = true;
 
 	b2RevoluteJoint* joint = (b2RevoluteJoint*)world->CreateJoint(&jointDef);

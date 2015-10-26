@@ -36,6 +36,7 @@ bool ModuleSceneIntro::Start()
 	return ret;
 }
 
+
 bool ModuleSceneIntro::LoadCollisionMap()
 {
 	sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50);
@@ -349,11 +350,6 @@ bool ModuleSceneIntro::LoadCollisionMap()
 	return ret;
 
 }
-
-
-
-
-
 
 
 
