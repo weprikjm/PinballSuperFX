@@ -187,43 +187,27 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 }
 
 
-b2RevoluteJoint* ModulePhysics::CreateFlipper(int x, int y, int* anchor, int sizeAnchor, int* shape, int sizeShape)
+b2RevoluteJoint* ModulePhysics::CreateFlipper(int x, int y, int* anchor, int sizeAnchor, b2Vec2 anchorA, b2Vec2 flipperPosition, b2Vec2 anchorB, int* shape)
 {
 	//Create Flippers
 
 
 
-	//b2Vec2	rightFlipperPosition;
+	
 	b2Vec2	leftFlipperPosition;
 
-	leftFlipperPosition.Set(144, 582);
-	//rightFlipperPosition.Set(310, 657);
 
 	
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 0;
 
 
-	//b2BodyDef body1;
-	//body1.type = b2_dynamicBody;
-	//body1.position.Set(PIXEL_TO_METERS(144), PIXEL_TO_METERS(575));
-
+	
 	b2BodyDef body2;
 	body2.type = b2_dynamicBody;
-	body2.position.Set(PIXEL_TO_METERS(200), PIXEL_TO_METERS(580));
+	body2.position.Set(PIXEL_TO_METERS(flipperPosition.x), PIXEL_TO_METERS(flipperPosition.y));
+	 
 	
-
-	//b2PolygonShape shape1;
-	//shape1.SetAsBox(PIXEL_TO_METERS(10),PIXEL_TO_METERS(10));
-	//b2FixtureDef fixture1;
-	//fixture1.density = 1;
-	//fixture1.shape = &shape1;
-
-
-	//b2Body* b1 = world->CreateBody(&body1);
-	//b1->CreateFixture(&fixture1);
-
-
 
 	b2PolygonShape shape2;
 	shape2.SetAsBox(PIXEL_TO_METERS(25), PIXEL_TO_METERS(5));
@@ -245,10 +229,11 @@ b2RevoluteJoint* ModulePhysics::CreateFlipper(int x, int y, int* anchor, int siz
 	revoluteJoint.upperAngle = 0.16 * b2_pi;
 
 
+	
+	revoluteJoint.localAnchorA.Set(PIXEL_TO_METERS(anchorA.x),PIXEL_TO_METERS(anchorA.y));
+	revoluteJoint.localAnchorB.Set(PIXEL_TO_METERS(anchorB.x), PIXEL_TO_METERS(anchorB.y));
 
-	revoluteJoint.localAnchorA.Set(PIXEL_TO_METERS(167),PIXEL_TO_METERS(585));
-	revoluteJoint.localAnchorB.Set(PIXEL_TO_METERS(-10), PIXEL_TO_METERS(-10));
-	//revoluteJoint.referenceAngle = 0;
+	
 	b2RevoluteJoint* joint = (b2RevoluteJoint*)world->CreateJoint(&revoluteJoint);
 
 
