@@ -41,17 +41,22 @@ public:
 	update_status PreUpdate();
 	update_status PostUpdate();
 	bool CleanUp();
-
+	
 	PhysBody* CreateCircle(int x, int y, int radius);
 	PhysBody* CreateRectangle(int x, int y, int width, int height, int type);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
 	PhysBody* CreateChain(int x, int y, int* points, int size);
 	b2RevoluteJoint* CreateFlipper(int x, int y, int* anchor, int sizeAnchor, const b2Vec2 Vec2AnchorA, b2Vec2 flipperPosition, const b2Vec2 Vec2AnchorB, int* objectA);
 	PhysBody* CreateGear(int x, int y, float radius);
+	PhysBody* CreateDockBox(int x, int y, int w, int h, b2Body &toAttach);
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
+	//Joints
+	b2PrismaticJoint* CreatePrismaticJoint(b2Body* bodyA, b2Body* bodyB, b2Vec2 worldAxis, b2Vec2 bodyA_anchor,  bool limit, int upper_lim, int lower_lim, bool motor, float maxMotorForce, float motorSpeed );
 
+	
 private:
+	b2Body* dock_body;
 	b2Body* body_clicked;
 	bool debug;
 	b2World* world;

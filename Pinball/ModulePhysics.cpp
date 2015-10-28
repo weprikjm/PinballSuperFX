@@ -53,25 +53,6 @@ bool ModulePhysics::Start()
 	fixture.shape = &shape;
 	big_ball->CreateFixture(&fixture);
 
-	//Create box
-
-	int x_b = 490;
-	int y_b = 722;
-
-	b2BodyDef dock;
-	dock.type = b2_kinematicBody;
-	dock.position.Set(PIXEL_TO_METERS(x_b), PIXEL_TO_METERS(y_b));
-
-	b2Body* dock_body = world->CreateBody(&dock);
-
-	b2PolygonShape shape_d;
-	shape_d.SetAsBox(PIXEL_TO_METERS(9) * 0.5f, PIXEL_TO_METERS(67) * 0.5f);
-
-	b2FixtureDef fixture_d;
-	fixture_d.shape = &shape_d;
-	dock_body->CreateFixture(&fixture_d);
-
-	//Create Bottom
 	
 	return true;
 }
@@ -292,8 +273,6 @@ PhysBody* ModulePhysics::CreateGear(int x, int y, float radius)
 	b2DistanceJoint* d_joint = (b2DistanceJoint*)world->CreateJoint(&dJointDef);*/
 	
 	b2RevoluteJointDef jointDef;
-	jointDef.bodyB = b;
-	jointDef.bodyA = b_g;
 	jointDef.Initialize(b, b_g, b->GetWorldCenter());
 	jointDef.collideConnected = false;
 
@@ -312,9 +291,6 @@ PhysBody* ModulePhysics::CreateGear(int x, int y, float radius)
 	return pbody;
 
 }
-
-
-
 
 PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size)
 {
@@ -350,9 +326,31 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size)
 	return pbody;
 }
 
+PhysBody* ModulePhysics::CreateDockBox(int x, int y, int w, int h, b2Body & toAttach){
+	//Create box
+	int x_b = 487;
+	int y_b = 702;
 
+	//Create the start dock
+	b2BodyDef dock;
+	dock.type = b2_dynamicBody;
+	dock.position.Set(PIXEL_TO_METERS(x_b), PIXEL_TO_METERS(y_b));
 
+	dock_body = world->CreateBody(&dock);
 
+	b2PolygonShape shape_d;
+	shape_d.SetAsBox(PIXEL_TO_METERS(9) * 0.5f, PIXEL_TO_METERS(20) * 0.5f);
+
+	b2FixtureDef fixture_d;
+	fixture_d.shape = &shape_d;
+	dock_body->CreateFixture(&fixture_d);
+
+	//Dock Joint
+	b2PrismaticJointDef jointDef;	b2Vec2 worldAxis(PIXEL_TO_METERS(x_b), PIXEL_TO_METERS(y_b));
+	jointDef.Initialize(dock_body, ground, dock_body->GetWorldCenter(), worldAxis);
+
+	return NULL;
+}
 update_status ModulePhysics::PostUpdate()
 {
 	b2Vec2 mouse_position;

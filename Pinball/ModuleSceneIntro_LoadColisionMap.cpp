@@ -11,8 +11,9 @@ bool ModuleSceneIntro::LoadCollisionMap()
 {
 
 	//Create bottom
-	App->physics->CreateRectangle(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 5, SCREEN_WIDTH, 5,-1);
+	PhysBody* groundBox =App->physics->CreateRectangle(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 5, SCREEN_WIDTH, 5,-1);
 
+	  //groundBox
 //	sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50);
 	bool ret = true;
 	//Creating Pinball Table

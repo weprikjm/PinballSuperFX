@@ -29,7 +29,7 @@ bool ModuleSceneIntro::Start()
 	box = App->textures->Load("pinball/crate.png");
 	rick = App->textures->Load("pinball/rick_head.png");
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
-	pinball = App->textures->Load("pinball/Capture.png");
+	//pinball = App->textures->Load("pinball/Capture.png");
 	
 	ret = LoadCollisionMap();
 
@@ -108,6 +108,12 @@ update_status ModuleSceneIntro::Update()
 
 		ricks.add(App->physics->CreateChain(App->input->GetMouseX(), App->input->GetMouseY(), rick_head, 64));
 	}
+
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN)
+	{
+		//App->physics->dock_body->
+	}
+
 
 	// Prepare for raycast ------------------------------------------------------
 	
