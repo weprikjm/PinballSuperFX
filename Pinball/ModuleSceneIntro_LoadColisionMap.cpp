@@ -281,30 +281,30 @@ bool ModuleSceneIntro::LoadCollisionMap()
 	b2Vec2 FlipperAnchorA;
 	b2Vec2 FlipperAnchorB;
 
-	FlipperPosition.Set(167,580);
+	FlipperPosition.Set(148, 587);
 
-	FlipperAnchorA.Set(167,585);
-	FlipperAnchorB.Set(-12,-10);
+	FlipperAnchorA.Set(149,585);
+	FlipperAnchorB.Set(-5, -11);
 
-	b2RevoluteJoint* LeftFlipperBody = App->physics->CreateFlipper(x, y, anchorLeftFlipper, 8, FlipperAnchorA, FlipperPosition, FlipperAnchorB, LeftFlipper);
+	b2RevoluteJoint* LeftFlipperBody = App->physics->CreateFlipper(x, y, anchorLeftFlipper, 8, FlipperAnchorA, FlipperPosition, FlipperAnchorB, LeftFlipper, -0.16f, 0.16f);
 	
-	FlipperPosition.Set(200, 650);
+	FlipperPosition.Set(177, 657);
 
-	FlipperAnchorA.Set(200, 650);
-	FlipperAnchorB.Set(-15, -10);
+	FlipperAnchorA.Set(177, 657);
+	FlipperAnchorB.Set(-5, -11);
 
-	b2RevoluteJoint* LeftFlipperDownBody = App->physics->CreateFlipper(x, y, anchorLeftFlipper, 8, FlipperAnchorA, FlipperPosition, FlipperAnchorB, LeftFlipper);
+	b2RevoluteJoint* LeftFlipperDownBody = App->physics->CreateFlipper(x, y, anchorLeftFlipper, 8, FlipperAnchorA, FlipperPosition, FlipperAnchorB, LeftFlipper, -0.16f, 0.16f);
 
 	FlipperPosition.Set(400, 580);
 
-	FlipperAnchorA.Set(367, 585);
+	FlipperAnchorA.Set(335, 584);
 	FlipperAnchorB.Set(10, 10);
 
 	//b2RevoluteJoint* RightFlipperBody = App->physics->CreateFlipper(x, y, anchorLeftFlipper, 8, FlipperAnchorA, FlipperPosition, FlipperAnchorB, LeftFlipper);
 
 	FlipperPosition.Set(200, 580);
 
-	FlipperAnchorA.Set(167, 585);
+	FlipperAnchorA.Set(310, 655);
 	FlipperAnchorB.Set(10, 10);
 
 	//b2RevoluteJoint* RightFlipperDownBody = App->physics->CreateFlipper(x, y, anchorLeftFlipper, 8, FlipperAnchorA, FlipperPosition, FlipperAnchorB, LeftFlipper);
