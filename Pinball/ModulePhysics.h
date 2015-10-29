@@ -48,7 +48,7 @@ public:
 	PhysBody* CreateChain(int x, int y, int* points, int size);
 	b2RevoluteJoint* CreateFlipper(int x, int y, int* anchor, int sizeAnchor, const b2Vec2 Vec2AnchorA, b2Vec2 flipperPosition, const b2Vec2 Vec2AnchorB, int* objectA);
 	PhysBody* CreateGear(int x, int y, float radius);
-	PhysBody* CreateDockBox(int x, int y, int w, int h, b2Body &toAttach);
+	PhysBody* CreateSpringBox(int x, int y, int w, int h);
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
 	//Joints
@@ -56,7 +56,7 @@ public:
 
 	
 private:
-	b2Body* dock_body;
+	b2Body* spring_body;
 	b2Body* body_clicked;
 	bool debug;
 	b2World* world;

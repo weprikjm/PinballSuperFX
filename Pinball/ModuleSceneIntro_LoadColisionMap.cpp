@@ -316,7 +316,8 @@ bool ModuleSceneIntro::LoadCollisionMap()
 	//Rotating Gear
 	App->physics->CreateGear(237, 237, 26.0f);
 
-
+	//Create Starting spring
+	App->physics->CreateSpringBox(487, 702,9,20);
 
 	return ret;
 

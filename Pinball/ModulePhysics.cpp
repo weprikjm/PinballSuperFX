@@ -326,29 +326,54 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size)
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateDockBox(int x, int y, int w, int h, b2Body & toAttach){
-	//Create box
-	int x_b = 487;
-	int y_b = 702;
+PhysBody* ModulePhysics::CreateSpringBox(int x, int y, int w, int h){
+	
 
-	//Create the start dock
-	b2BodyDef dock;
-	dock.type = b2_dynamicBody;
-	dock.position.Set(PIXEL_TO_METERS(x_b), PIXEL_TO_METERS(y_b));
+	//Create the start spring
+	b2BodyDef spring;
+	spring.type = b2_dynamicBody;
+	spring.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
-	dock_body = world->CreateBody(&dock);
+	spring_body = world->CreateBody(&spring);
 
 	b2PolygonShape shape_d;
-	shape_d.SetAsBox(PIXEL_TO_METERS(9) * 0.5f, PIXEL_TO_METERS(20) * 0.5f);
+	shape_d.SetAsBox(PIXEL_TO_METERS(w) * 0.5f, PIXEL_TO_METERS(h ) * 0.5f);
 
 	b2FixtureDef fixture_d;
 	fixture_d.shape = &shape_d;
-	dock_body->CreateFixture(&fixture_d);
+	spring_body->CreateFixture(&fixture_d);
 
-	//Dock Joint
-	b2PrismaticJointDef jointDef;	b2Vec2 worldAxis(PIXEL_TO_METERS(x_b), PIXEL_TO_METERS(y_b));
-	jointDef.Initialize(dock_body, ground, dock_body->GetWorldCenter(), worldAxis);
+	//Create the Joint body
+	b2BodyDef debug;
+	debug.type = b2_dynamicBody;
+	debug.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y +1));
 
+	b2Body* box = world->CreateBody(&debug);
+
+	b2PolygonShape shape;
+	shape.SetAsBox(PIXEL_TO_METERS(4) * 0.5f, PIXEL_TO_METERS(4) * 0.5f);
+
+	b2FixtureDef fixture;
+	fixture.shape = &shape;
+	box->CreateFixture(&fixture);
+
+	//spring Joint
+	
+	b2PrismaticJointDef jointDef;
+	b2Vec2 worldAxis(0.0f, 1.0f);
+	jointDef.Initialize(spring_body, box, spring_body->GetWorldCenter(), worldAxis);
+
+	jointDef.enableMotor = true;
+	jointDef.motorSpeed = -1.5f;
+	jointDef.enableLimit = true;
+	jointDef.collideConnected = true;
+	jointDef.upperTranslation = 0.0f;
+	jointDef.lowerTranslation = 0.0f;
+
+	
+	
+	b2PrismaticJoint* joint = (b2PrismaticJoint*)world->CreateJoint(&jointDef);
+	
 	return NULL;
 }
 update_status ModulePhysics::PostUpdate()
