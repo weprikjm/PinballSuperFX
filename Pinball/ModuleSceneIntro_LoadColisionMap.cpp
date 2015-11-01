@@ -283,15 +283,15 @@ bool ModuleSceneIntro::LoadCollisionMap()
 
 	FlipperPosition.Set(148, 587);
 
-	FlipperAnchorA.Set(149,585);
-	FlipperAnchorB.Set(-5, -11);
+	FlipperAnchorA.Set(155,585);
+	FlipperAnchorB.Set(-20, -0);
 
 	b2RevoluteJoint* LeftFlipperBody = App->physics->CreateFlipper(x, y, anchorLeftFlipper, 8, FlipperAnchorA, FlipperPosition, FlipperAnchorB, LeftFlipper, -0.16f, 0.16f);
 	
-	FlipperPosition.Set(177, 657);
+	FlipperPosition.Set(187, 657);
 
 	FlipperAnchorA.Set(177, 657);
-	FlipperAnchorB.Set(-5, -11);
+	FlipperAnchorB.Set(-20, 0);
 
 	b2RevoluteJoint* LeftFlipperDownBody = App->physics->CreateFlipper(x, y, anchorLeftFlipper, 8, FlipperAnchorA, FlipperPosition, FlipperAnchorB, LeftFlipper, -0.16f, 0.16f);
 

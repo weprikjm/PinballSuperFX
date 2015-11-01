@@ -187,7 +187,7 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 }
 
 
-b2RevoluteJoint* ModulePhysics::CreateFlipper(int x, int y, int* anchor, int sizeAnchor, b2Vec2 anchorPosition, b2Vec2 flipperPosition, b2Vec2 anchorB, int* shape, float _lowerAngle, float upperAngle)
+b2RevoluteJoint* ModulePhysics::CreateFlipper(int x, int y, int* anchor, int sizeAnchor, b2Vec2 anchorPosition, b2Vec2 flipperPosition, b2Vec2 anchorB, int* shape, float lowerAngle, float upperAngle)
 {
 	//Create Flippers
 
@@ -237,8 +237,8 @@ b2RevoluteJoint* ModulePhysics::CreateFlipper(int x, int y, int* anchor, int siz
 	revoluteJoint.bodyB = b2;
 	revoluteJoint.collideConnected = false;
 	revoluteJoint.enableLimit = true;
-	revoluteJoint.lowerAngle = -0.16 * b2_pi;
-	revoluteJoint.upperAngle = 0.16 * b2_pi;
+	revoluteJoint.lowerAngle = lowerAngle * b2_pi;
+	revoluteJoint.upperAngle = upperAngle * b2_pi;
 
 
 	
