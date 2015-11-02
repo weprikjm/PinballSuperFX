@@ -26,8 +26,9 @@ bool ModulePlayer::Start()
 	//flipper1.fx = flipper2.fx = App->audio->LoadFx("pinball/flipperLeft.wav");
 	
 
-
-
+	createStandardBall(502, 582, 18, 1.0f, 0.3f, false);
+	ball.fx = App->audio->LoadFx("pinball/ball_bounce.wav");
+	ball.body->listener = this;
 
 	flipper_up1.graphic = App->textures->Load("pinball/flipperLeftBig.png");
 	flipper_up2.graphic = App->textures->Load("pinball/flipperRightBig.png");
@@ -36,14 +37,6 @@ bool ModulePlayer::Start()
 	//spring.fx = App->audio->LoadFx("pinballflipperLeft.wav");
 	
 
-	
-	b2Vec2 ballPosInit;
-	ballPosInit.y = 582;
-	ballPosInit.x = 502;
-
-	ball.body = App->physics->AddBody(ballPosInit.x, ballPosInit.y, 18, b_dynamic, 1.0f, 0.3f, true);
-	ball.fx = App->audio->LoadFx("pinball/ball_bounce.wav");
-	ball.body->listener = this;
 	
 	// Pivot 0, 0
 	// Pivot -145, -579
@@ -250,6 +243,13 @@ bool ModulePlayer::Start()
 	return true;
 }
 
+
+void  ModulePlayer::createStandardBall(int x, int y, unsigned int radius, float density, float restitution, bool isSensor)
+{
+
+	ball.body = App->physics->AddBody(x, y, radius, b_dynamic, 1.0f, 0.3f, isSensor);
+	
+}
 // Unload assets
 bool ModulePlayer::CleanUp()
 {

@@ -409,6 +409,11 @@ update_status ModuleSceneIntro::Update()
 		}
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	{
+	//	createStandardBall(502, 582, 8, b_dynamic, false);
+		App->player->createStandardBall(App->input->GetMouseX(), App->input->GetMouseY(), 18, 1.0f, 0.3f, false);
+	}
 
 	p2SString title("Lives: %d Score: %d Global Score: %d", App->player->lives,App->player->score, App->player->globalScore);//TODO GETTERS
 
