@@ -73,7 +73,8 @@ public:
 	//void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse);
 	
 private:
-
+	b2Body* body_clicked;
+	b2MouseJoint* mouse_joint;
 	b2World* world;
 	p2List<PhysBody*> bodies;
 	bool debug;
