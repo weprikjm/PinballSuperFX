@@ -46,7 +46,7 @@ public:
 	PhysBody* CreateRectangle(int x, int y, int width, int height, int type);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
 	PhysBody* CreateChain(int x, int y, int* points, int size);
-	b2RevoluteJoint* CreateFlipper(int x, int y, int* anchor, int sizeAnchor, const b2Vec2 Vec2AnchorA, b2Vec2 flipperPosition, const b2Vec2 Vec2AnchorB, int* objectA);
+	b2RevoluteJoint* CreateFlipper(int x, int y, int* anchor, int sizeAnchor, const b2Vec2 AnchorPosition, b2Vec2 flipperPosition, const b2Vec2 Vec2AnchorB, int* objectA, float, float);
 	PhysBody* CreateGear(int x, int y, float radius);
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);

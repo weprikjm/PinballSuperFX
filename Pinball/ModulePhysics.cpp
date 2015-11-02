@@ -187,7 +187,7 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 }
 
 
-b2RevoluteJoint* ModulePhysics::CreateFlipper(int x, int y, int* anchor, int sizeAnchor, b2Vec2 anchorA, b2Vec2 flipperPosition, b2Vec2 anchorB, int* shape)
+b2RevoluteJoint* ModulePhysics::CreateFlipper(int x, int y, int* anchor, int sizeAnchor, b2Vec2 anchorPosition, b2Vec2 flipperPosition, b2Vec2 anchorB, int* shape, float lowerAngle, float upperAngle)
 {
 	//Create Flippers
 
@@ -199,15 +199,26 @@ b2RevoluteJoint* ModulePhysics::CreateFlipper(int x, int y, int* anchor, int siz
 
 	
 	b2FixtureDef fixtureDef;
-	fixtureDef.density = 0;
+	fixtureDef.density = 1;
 
+	b2FixtureDef fixtureDef2;
+	fixtureDef2.density = 1;
 
+	b2BodyDef body1;
+	body1.type = b2_staticBody;
+	body1.position.Set(PIXEL_TO_METERS(flipperPosition.x), PIXEL_TO_METERS(flipperPosition.y));
 	
 	b2BodyDef body2;
 	body2.type = b2_dynamicBody;
-	body2.position.Set(PIXEL_TO_METERS(flipperPosition.x), PIXEL_TO_METERS(flipperPosition.y));
+	body2.position.Set(PIXEL_TO_METERS((flipperPosition.x)), PIXEL_TO_METERS(flipperPosition.y));
 	 
 	
+	b2CircleShape shape1;
+	shape1.m_radius = PIXEL_TO_METERS(3);
+	b2FixtureDef fixture1;
+	fixture1.density = 1;
+	fixture1.shape = &shape1;
+
 
 	b2PolygonShape shape2;
 	shape2.SetAsBox(PIXEL_TO_METERS(25), PIXEL_TO_METERS(5));
@@ -215,29 +226,31 @@ b2RevoluteJoint* ModulePhysics::CreateFlipper(int x, int y, int* anchor, int siz
 	fixture2.density = 1;
 	fixture2.shape = &shape2;
 	
-
+	b2Body* b1 = world->CreateBody(&body1);
+	b1->CreateFixture(&fixture1);
 	b2Body* b2 = world->CreateBody(&body2);
 	b2->CreateFixture(&fixture2);
-
+	
 	
 	b2RevoluteJointDef revoluteJoint;
-	revoluteJoint.bodyA = ground;
+	revoluteJoint.bodyA = b1;
 	revoluteJoint.bodyB = b2;
-	revoluteJoint.collideConnected = true;
+	revoluteJoint.collideConnected = false;
 	revoluteJoint.enableLimit = true;
-	revoluteJoint.lowerAngle = -0.16 * b2_pi;
-	revoluteJoint.upperAngle = 0.16 * b2_pi;
+	revoluteJoint.lowerAngle = lowerAngle * b2_pi;
+	revoluteJoint.upperAngle = upperAngle * b2_pi;
 
 
 	
-	revoluteJoint.localAnchorA.Set(PIXEL_TO_METERS(anchorA.x),PIXEL_TO_METERS(anchorA.y));
+	revoluteJoint.localAnchorA.Set(0,0);
 	revoluteJoint.localAnchorB.Set(PIXEL_TO_METERS(anchorB.x), PIXEL_TO_METERS(anchorB.y));
 
 	
 	b2RevoluteJoint* joint = (b2RevoluteJoint*)world->CreateJoint(&revoluteJoint);
-
+	
 
 	return joint;
+	
 }
 
 PhysBody* ModulePhysics::CreateGear(int x, int y, float radius)
