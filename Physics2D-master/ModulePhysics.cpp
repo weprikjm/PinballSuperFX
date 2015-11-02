@@ -162,7 +162,8 @@ update_status ModulePhysics::PostUpdate()
 					body_clicked = (PhysBody*)b->GetUserData();
 				}
 			}
-				
+				
+
 		}
 	}
 
@@ -194,13 +195,18 @@ update_status ModulePhysics::PostUpdate()
 			mouse_joint->SetTarget(mouse_position);
 			b2Vec2 clickPos;
 			clickPos= body_clicked->body->GetLocalCenter();
-			App->renderer->DrawLine(clickPos.x, clickPos.y, App->input->GetMouseX(), App->input->GetMouseY(), 255, 0, 0, 255, true);
+			App->renderer->DrawLine(METERS_TO_PIXELS(init_position.x),
+				METERS_TO_PIXELS(init_position.y),
+				METERS_TO_PIXELS(mouse_position.x),
+				METERS_TO_PIXELS(mouse_position.y),
+				255, 0, 0);
 		}
 
 		else
 		{
 			world->DestroyJoint(mouse_joint);
-			mouse_joint = NULL;			body_clicked = NULL;
+			mouse_joint = NULL;
+			body_clicked = NULL;
 		}
 
 		// TODO 3: If the player keeps pressing the mouse button, update
@@ -211,7 +217,8 @@ update_status ModulePhysics::PostUpdate()
 /*if (App->input->GetMouseButton(SDL_BUTTON_LEFT) != KEY_REPEAT body_clicked != NULL)
 {
 world->DestroyJoint(mouse_joint);
-mouse_joint = NULL;body_clicked = NULL;
+mouse_joint = NULL;
+body_clicked = NULL;
 }*/
 // TODO 4: If the player releases the mouse button, destroy the joint
 /*if (App->input->GetMouseButton(SDL_BUTTON_LEFT) != KEY_DOWN)

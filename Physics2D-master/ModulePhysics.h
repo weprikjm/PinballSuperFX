@@ -77,5 +77,6 @@ private:
 	b2MouseJoint* mouse_joint;
 	b2World* world;
 	p2List<PhysBody*> bodies;
+	b2Vec2 init_position;
 	bool debug;
 };
