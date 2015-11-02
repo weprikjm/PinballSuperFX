@@ -70,6 +70,7 @@ update_status ModulePhysics::PreUpdate()
 // 
 update_status ModulePhysics::PostUpdate()
 {
+	bool toInit = false;
 	b2Vec2 mouse_position;
 
 	if(App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
@@ -160,6 +161,7 @@ update_status ModulePhysics::PostUpdate()
 				if (f->GetShape()->TestPoint(b->GetTransform(), mouse_position) == true)
 				{
 					body_clicked = (PhysBody*)b->GetUserData();
+					toInit = true;
 				}
 			}
 				
@@ -167,10 +169,12 @@ update_status ModulePhysics::PostUpdate()
 		}
 	}
 
-	if (body_clicked != NULL)
+	if (body_clicked != NULL /*&& toInit == true*/)
 	{
 		b2BodyDef test;
 		b2MouseJointDef def;
+		
+		startPos.Set(App->input->GetMouseX(), App->input->GetMouseY());
 		test.type = b2_staticBody;
 		if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
 		{
@@ -179,34 +183,31 @@ update_status ModulePhysics::PostUpdate()
 		b2Body * wut = world->CreateBody(&test);
 		def.bodyA = wut;
 		def.bodyB = body_clicked->body;
-		def.target = mouse_position;
+		def.target = startPos;
 		def.dampingRatio = 0.5f;
-		def.frequencyHz = 2.0f;
-		def.maxForce = 100.0f * body_clicked->body->GetMass();
+		def.frequencyHz = 1.0f;
+		def.maxForce = 0.5f * body_clicked->body->GetMass();
 
 		mouse_joint = (b2MouseJoint*)world->CreateJoint(&def);
 	
-		int wat = App->input->GetMouseButton(SDL_BUTTON_LEFT);
-		if ( wat != KEY_IDLE )
+		
+		if ( App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT )
 		{
-			/*def.target.x = PIXEL_TO_METERS(App->input->GetMouseX());
-			def.target.y = PIXEL_TO_METERS(App->input->GetMouseY());*/
+			mouse_position.x =App->input->GetMouseX();
+			mouse_position.y = App->input->GetMouseY(); 
 
 			mouse_joint->SetTarget(mouse_position);
-			b2Vec2 clickPos;
-			clickPos= body_clicked->body->GetLocalCenter();
-			App->renderer->DrawLine(METERS_TO_PIXELS(init_position.x),
-				METERS_TO_PIXELS(init_position.y),
-				METERS_TO_PIXELS(mouse_position.x),
-				METERS_TO_PIXELS(mouse_position.y),
-				255, 0, 0);
+			
+			App->renderer->DrawLine(wut->GetLocalCenter().x, wut->GetLocalCenter().y, App->input->GetMouseX(), App->input->GetMouseY(), 255, 0, 0, 255, true);
 		}
 
-		else
+		int wat = ;
+		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
 		{
 			world->DestroyJoint(mouse_joint);
 			mouse_joint = NULL;
 			body_clicked = NULL;
+			toInit = false;
 		}
 
 		// TODO 3: If the player keeps pressing the mouse button, update
