@@ -1,7 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleSceneIntro.h"
-
+#include "p2SString.h"
 
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -25,8 +25,8 @@ bool ModuleSceneIntro::Start()
 	//App->audio->PlayMusic("pinball/Rhinoceros2.ogg", 0.0f);
 
 	// Graphics
-	/*graphics = App->textures->Load("pinball/pinball.png");
-	bouncer1.texture = bouncer2.texture = App->textures->Load("pinball/bouncer_hit.png");
+	graphics = App->textures->Load("pinball/Capture.png");
+	/*bouncer1.texture = bouncer2.texture = App->textures->Load("pinball/bouncer_hit.png");
 	side_bouncer1.texture = App->textures->Load("pinball/left_bouncer_hit.png");
 	side_bouncer2.texture = App->textures->Load("pinball/right_bouncer_hit.png");
 
@@ -409,6 +409,15 @@ update_status ModuleSceneIntro::Update()
 		}
 	}
 
+
+	p2SString title("Lives: %d Score: %d Global Score: %d", App->player->lives,App->player->score, App->player->globalScore);//TODO GETTERS
+
+
+	App->window->SetTitle(title.GetString()); 
+
+
+
+
 	return UPDATE_CONTINUE;
 }
 
@@ -504,7 +513,7 @@ bool ModuleSceneIntro::LoadCollisionMap()
 	//Create bottom
 	
 	
-	App->physics->AddBody({ SCREEN_WIDTH / 2, SCREEN_HEIGHT - 5, SCREEN_WIDTH, 5 }, b_static);
+	//App->physics->AddBody({ SCREEN_WIDTH / 2, SCREEN_HEIGHT - 5, SCREEN_WIDTH, 5 }, b_static);
 	//	sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50);
 	bool ret = true;
 	//Creating Pinball Table
@@ -601,8 +610,8 @@ bool ModuleSceneIntro::LoadCollisionMap()
 	int	tinyLauncherCube[8] = {
 		472, 687,
 		480, 687,
-		480, 695,
-		472, 695
+		480, 1895,
+		472, 1895
 	};
 
 
@@ -611,8 +620,8 @@ bool ModuleSceneIntro::LoadCollisionMap()
 	int tinyLauncherCube2[8] = {
 		508, 687,
 		497, 687,
-		497, 696,
-		508, 696
+		497, 1896,
+		508, 1896
 	};
 	
 	
@@ -621,8 +630,8 @@ bool ModuleSceneIntro::LoadCollisionMap()
 		505, 122,
 		505, 144,
 		506, 686,
-		506, 760,
-		514, 760,
+		506, 1760,
+		514, 1760,
 		514, 122
 	};
 

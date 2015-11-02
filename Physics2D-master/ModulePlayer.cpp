@@ -15,18 +15,33 @@ bool ModulePlayer::Start()
 {
 	LOG("Loading player");
 	
+	lives = 2;
+	score = 0;
+	globalScore = 0;
+
+
 	ball.graphic = App->textures->Load("pinball/ball.png");
 	flipper1.graphic = App->textures->Load("pinball/flipperLeft.png");
 	flipper2.graphic = App->textures->Load("pinball/flipperRight.png");
 	//flipper1.fx = flipper2.fx = App->audio->LoadFx("pinball/flipperLeft.wav");
 	
+
+
+
+
 	flipper_up1.graphic = App->textures->Load("pinball/flipperLeftBig.png");
 	flipper_up2.graphic = App->textures->Load("pinball/flipperRightBig.png");
-	/*
-	spring.graphic = App->textures->Load("pinball/flipperLeft.png");
-	spring.fx = App->audio->LoadFx("pinballflipperLeft.wav");
-	*/
-	ball.body = App->physics->AddBody(502, 582, 10, b_dynamic, 1.0f, 0.3f, true);
+	
+	spring.graphic = App->textures->Load("pinball/spring.png");
+	//spring.fx = App->audio->LoadFx("pinballflipperLeft.wav");
+	
+
+	
+	b2Vec2 ballPosInit;
+	ballPosInit.y = 582;
+	ballPosInit.x = 502;
+
+	ball.body = App->physics->AddBody(ballPosInit.x, ballPosInit.y, 18, b_dynamic, 1.0f, 0.3f, true);
 	ball.fx = App->audio->LoadFx("pinball/ball_bounce.wav");
 	ball.body->listener = this;
 	
@@ -141,8 +156,8 @@ bool ModulePlayer::Start()
 
 	*/
 	
-	spring.body = App->physics->AddBody({486, 643, 30, 65}, b_dynamic);
-	spring_wheel = App->physics->AddBody(476, 677, 10, b_static);
+	spring.body = App->physics->AddBody({486, 900, 15, 65}, b_dynamic);
+	spring_wheel = App->physics->AddBody(476, 650, 10, b_static);
 	App->physics->CreateLineJoint(spring.body, spring_wheel, 0, 0, 0, 0, 20.0f, 1.0f);
 	
 	
@@ -297,9 +312,11 @@ update_status ModulePlayer::Update()
 
 	int x, y;
 
-	ball.body->GetPosition(x, y);
-	App->renderer->Blit(ball.graphic, x, y, NULL, 1.0f);//, ball.body->GetAngle());
-	
+
+//, ball.body->GetAngle());
+
+	ballBlit();
+
 	flipper1.body->GetPosition(x, y);
 	App->renderer->Blit(flipper1.graphic, x , y, NULL, 1.0f, flipper1.body->GetAngle(), 0, 0);
 	
@@ -311,12 +328,30 @@ update_status ModulePlayer::Update()
 	
 	flipper_up2.body->GetPosition(x, y);
 	App->renderer->Blit(flipper_up2.graphic, x, y, NULL, 1.0f, flipper_up2.body->GetAngle(), 0, 0);
-	/*
+	
 	spring.body->GetPosition(x, y);
 	App->renderer->Blit(spring.graphic, x, y, NULL, 1.0f, spring.body->GetAngle());
-	*/
+	
 	return UPDATE_CONTINUE;
 }
 
 
+void ModulePlayer::ballBlit()
+{
 
+	int x, y;
+
+	ball.body->GetPosition(x, y);
+	//this->ballPosInit.x;
+	//this->ballPosInit.y;
+	if (y > 900)
+	{
+		ball.body->SetPosition(502, 582);
+		x = 598;
+		y = 575;
+		App->audio->PlayFx(spring.fx);
+		lives--;
+	}
+	App->renderer->Blit(ball.graphic, x, y, NULL, 1.0f);
+
+}

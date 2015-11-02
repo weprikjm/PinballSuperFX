@@ -25,7 +25,7 @@ public:
 	bool Start();
 	update_status Update();
 	bool CleanUp();
-
+	void ballBlit();
 public:
 
 	Object ball;
@@ -43,4 +43,11 @@ public:
 	PhysBody* flipper_up2_wheel;
 
 	PhysBody* sensor1;
+//	b2Vec2 ballPosInit;
+	bool hasFallenOut;
+	int lives;
+	int score;
+	int globalScore;
+
+
 };
