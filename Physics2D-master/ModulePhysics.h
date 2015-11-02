@@ -2,7 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Box2D/Box2D/Box2D.h"
-
+#include "ModuleRender.h"
 #define PIXELS_PER_METER 50.0f // if touched change METER_PER_PIXEL too
 #define METER_PER_PIXEL 0.02f // this is 1 / PIXELS_PER_METER !
 
@@ -73,7 +73,8 @@ public:
 	//void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse);
 	
 private:
-
+	b2Body* body_clicked;
+	b2MouseJoint* mouse_joint;
 	b2World* world;
 	p2List<PhysBody*> bodies;
 	bool debug;
