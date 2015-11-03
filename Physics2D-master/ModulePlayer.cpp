@@ -25,10 +25,6 @@ bool ModulePlayer::Start()
 	flipper2.graphic = App->textures->Load("pinball/flipperRight.png");
 	//flipper1.fx = flipper2.fx = App->audio->LoadFx("pinball/flipperLeft.wav");
 	
-
-
-
-
 	flipper_up1.graphic = App->textures->Load("pinball/flipperLeftBig.png");
 	flipper_up2.graphic = App->textures->Load("pinball/flipperRightBig.png");
 	
@@ -160,90 +156,7 @@ bool ModulePlayer::Start()
 	spring_wheel = App->physics->AddBody(476, 650, 10, b_static);
 	App->physics->CreateLineJoint(spring.body, spring_wheel, 0, 0, 0, 0, 20.0f, 1.0f);
 	
-	
-	/*
-
-	//Flippers
-	//Left Flipper
-
-
-
-	int anchorLeftFlipper[8] = {
-	144, 572,
-	134, 585,
-	145, 590,
-	155, 577
-	};
-
-
-
-	int LeftFlipper[26] = {
-	147, 575,
-	141, 584,
-	143, 589,
-	147, 594,
-	154, 598,
-	163, 602,
-	170, 604,
-	178, 607,
-	185, 609,
-	191, 612,
-	173, 593,
-	163, 585,
-	153, 579
-	};
-
-	b2Vec2 FlipperPosition;
-	b2Vec2 FlipperAnchorA;
-	b2Vec2 FlipperAnchorB;
-
-	FlipperPosition.Set(148, 587);
-
-	FlipperAnchorA.Set(155, 585);
-	FlipperAnchorB.Set(-20, -0);
-
-	b2RevoluteJoint* LeftFlipperBody = App->physics->CreateFlipper(x, y, anchorLeftFlipper, 8, FlipperAnchorA, FlipperPosition, FlipperAnchorB, LeftFlipper, -0.16f, 0.16f);
-
-	FlipperPosition.Set(187, 657);
-
-	FlipperAnchorA.Set(177, 657);
-	FlipperAnchorB.Set(-20, 0);
-
-	b2RevoluteJoint* LeftFlipperDownBody = App->physics->CreateFlipper(x, y, anchorLeftFlipper, 8, FlipperAnchorA, FlipperPosition, FlipperAnchorB, LeftFlipper, -0.16f, 0.16f);
-
-	FlipperPosition.Set(400, 580);
-
-	FlipperAnchorA.Set(335, 584);
-	FlipperAnchorB.Set(10, 10);
-
-	//b2RevoluteJoint* RightFlipperBody = App->physics->CreateFlipper(x, y, anchorLeftFlipper, 8, FlipperAnchorA, FlipperPosition, FlipperAnchorB, LeftFlipper);
-
-	FlipperPosition.Set(200, 580);
-
-	FlipperAnchorA.Set(310, 655);
-	FlipperAnchorB.Set(10, 10);
-
-	//b2RevoluteJoint* RightFlipperDownBody = App->physics->CreateFlipper(x, y, anchorLeftFlipper, 8, FlipperAnchorA, FlipperPosition, FlipperAnchorB, LeftFlipper);
-
-
-	//RightFlipper
-
-	//Rotating Gear
-	App->physics->CreateGear(237, 237, 26.0f);
-
-	*/
-
-
-
-
-
-
-
-
-
-
-
-
+	metalGear.body->App->physics->AddBody()
 
 
 

@@ -442,6 +442,30 @@ PhysBody* ModulePhysics::AddEdge(const SDL_Rect& rect, int* points, uint count)
 	return ret;
 }
 
+PhysBody* ModulePhysics::CreateGear(float density, float restitution, bool isSensor)
+{
+	//x:237 y:237: radius:26.0f
+	// Create sphere
+	int x = 237;
+	int y = 237;
+
+	b2BodyDef body;
+	body.type = b2_dynamicBody;
+	body.position.Set(PIXEL_TO_METERS(237), PIXEL_TO_METERS(237));
+
+	b2CircleShape circleShape;
+	circleShape.m_radius = 26.0f;
+	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+	/*b2BodyDef pin;
+	body_g.type = b2_staticBody;
+	int x_g = x - 15;
+	int y_g = y - 60;
+	body_g.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+	*/
+	b2Body* b = world->CreateBody(&body);
+
+}
+
 void ModulePhysics::DestroyBody(PhysBody* body)
 {
 	assert(body);
