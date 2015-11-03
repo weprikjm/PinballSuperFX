@@ -464,6 +464,8 @@ PhysBody* ModulePhysics::CreateGear(float density, float restitution, bool isSen
 	*/
 	b2Body* b = world->CreateBody(&body);
 
+	return NULL;
+
 }
 
 void ModulePhysics::DestroyBody(PhysBody* body)
