@@ -23,7 +23,7 @@ bool ModulePlayer::Start()
 	ball.graphic = App->textures->Load("pinball/ball.png");
 	flipper1.graphic = App->textures->Load("pinball/flipperLeft.png");
 	flipper2.graphic = App->textures->Load("pinball/flipperRight.png");
-	//flipper1.fx = flipper2.fx = App->audio->LoadFx("pinball/flipperLeft.wav");
+	flipper1.fx = flipper2.fx = App->audio->LoadFx("pinball/flipper.wav");
 	
 	flipper_up1.graphic = App->textures->Load("pinball/flipperLeftBig.png");
 	flipper_up2.graphic = App->textures->Load("pinball/flipperRightBig.png");
