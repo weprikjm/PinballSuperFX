@@ -38,6 +38,9 @@ bool ModulePhysics::Start()
 	world = new b2World(b2Vec2(GRAVITY_X, -GRAVITY_Y));
 	world->SetContactListener(this);
 
+	b2BodyDef test;
+	ground = world->CreateBody(&test);
+
 	return true;
 }
 
@@ -70,15 +73,13 @@ update_status ModulePhysics::PreUpdate()
 // 
 update_status ModulePhysics::PostUpdate()
 {
-	bool toInit = false;
 	b2Vec2 mouse_position;
 
 	if(App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
 
-	/*if(!debug)
-		return UPDATE_CONTINUE;*/
-	debug = true;
+	if(!debug)
+		return UPDATE_CONTINUE;
 	// get center
 	for(b2Body* b = world->GetBodyList(); b; b = b->GetNext())
 	{
@@ -154,15 +155,13 @@ update_status ModulePhysics::PostUpdate()
 				break;
 			}
 
-			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && toInit == false)
+			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 			{
 				mouse_position.x = PIXEL_TO_METERS(App->input->GetMouseX());
 				mouse_position.y = PIXEL_TO_METERS(App->input->GetMouseY());
-				if ((PhysBody*)b->GetUserData() && f->GetShape()->TestPoint(b->GetTransform(), mouse_position) == true)
+				if (f->GetShape()->TestPoint(b->GetTransform(), mouse_position) == true)
 				{
-					startPos.Set(PIXEL_TO_METERS(App->input->GetMouseX()), PIXEL_TO_METERS(App->input->GetMouseY()));
-					body_clicked = (PhysBody*)b->GetUserData();
-					toInit = true;
+					body_clicked = f->GetBody();
 				}
 			}
 				
@@ -170,57 +169,73 @@ update_status ModulePhysics::PostUpdate()
 		}
 	}
 
-	if (body_clicked != NULL )
+	if (body_clicked != NULL && body_clicked->GetType() != b2_kinematicBody)
 	{
-		b2BodyDef test;
+	
 		b2MouseJointDef def;
-		
-		
-		test.type = b2_staticBody;
-		test.position.Set(startPos.x, startPos.y);
 		if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
 		{
 			char debug = 'a';
 		}
-		b2Body * test_body = world->CreateBody(&test);
-		def.bodyA = test_body;
-		def.bodyB = body_clicked->body;
-		def.target = startPos;
+		
+		def.bodyA = ground;
+		def.bodyB = body_clicked;
+		def.target = mouse_position;
 		def.dampingRatio = 0.5f;
-		def.frequencyHz = 2.0f;
-		def.maxForce = 1.0f * body_clicked->body->GetMass();
-		def.collideConnected = false;
+		def.frequencyHz = 1.250f;
+		def.maxForce = 25.0f * body_clicked->GetMass();
 
-		body_clicked = NULL;
-		
 		mouse_joint = (b2MouseJoint*)world->CreateJoint(&def);
+	
+		body_clicked = NULL;
+		// TODO 3: If the player keeps pressing the mouse button, update
+		// target position and draw a red line between both anchor points
+	}
+	int wat = App->input->GetMouseButton(SDL_BUTTON_LEFT);
+	if (mouse_joint != NULL && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	{
+	
+
+		/*def.target.x = PIXEL_TO_METERS(App->input->GetMouseX());
+		def.target.y = PIXEL_TO_METERS(App->input->GetMouseY());*/
+		b2Vec2 pos_A, pos_B;
+		pos_A = mouse_joint->GetAnchorB();
+		pos_B.x = PIXEL_TO_METERS(App->input->GetMouseX());
+		pos_B.y = PIXEL_TO_METERS(App->input->GetMouseY());
 		
-	}
-	// TODO 3: If the player keeps pressing the mouse button, update
-	// target position and draw a red line between both anchor points
+		mouse_joint->SetTarget(pos_B);
 
-	if (mouse_joint && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
-	{
-		mouse_position.Set(PIXEL_TO_METERS(App->input->GetMouseX()), PIXEL_TO_METERS(App->input->GetMouseY()));
-
-		mouse_joint->SetTarget(mouse_position);
-
-		App->renderer->DrawLine(METERS_TO_PIXELS(mouse_joint->GetTarget().x), METERS_TO_PIXELS(mouse_joint->GetTarget().y), App->input->GetMouseX(), App->input->GetMouseY(), 255, 0, 0, 255, true);
+		if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
+		{
+			char debug = 'a';
+		}
+		App->renderer->DrawLine(METERS_TO_PIXELS(pos_A.x),	METERS_TO_PIXELS(pos_A.y),METERS_TO_PIXELS(pos_B.x),	METERS_TO_PIXELS(pos_B.y),255, 0, 0);
 	}
 
-	//int wat = ;
-	// TODO 4: If the player releases the mouse button, destroy the joint
-
-	if (mouse_joint &&App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
+	if (mouse_joint != NULL && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_IDLE)
 	{
+		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+		{
+			char debug = 'a';
+		}
+
 		world->DestroyJoint(mouse_joint);
 		mouse_joint = NULL;
-		toInit = false;
 	}
 	return UPDATE_CONTINUE;
 }
-
-
+/*if (App->input->GetMouseButton(SDL_BUTTON_LEFT) != KEY_REPEAT body_clicked != NULL)
+{
+world->DestroyJoint(mouse_joint);
+mouse_joint = NULL;
+body_clicked = NULL;
+}*/
+// TODO 4: If the player releases the mouse button, destroy the joint
+/*if (App->input->GetMouseButton(SDL_BUTTON_LEFT) != KEY_DOWN)
+{
+delete(mouse_joint);
+body_clicked = NULL;
+}*/
 
 update_status ModulePhysics::Update()
 {
@@ -292,6 +307,276 @@ PhysBody* ModulePhysics::AddBody(const SDL_Rect& rect, body_type type, float den
 
 	return ret;
 }
+
+
+/*
+
+b2Vec2* ModulePhysics::CreateGearBoxes(const int* _array, b2Vec2* & toFill)
+{
+	b2Vec2 ret[4];
+	if (_array)
+	{
+		
+		
+	}
+
+	return NULL;
+
+}*/
+PhysBody* ModulePhysics::CreateGear(float density, float restitution, bool isSensor)
+{
+	
+	/*
+	Crear els bodies i la rotation(o gear) joint
+	*/
+
+	//
+	//x:237 y:237: radius:26.0f
+	//Create Gear squares
+	
+	b2BodyDef body_circle;
+	//b2Body bodytmp;
+	PhysBody* circle_b = NULL;
+	circle_b = new PhysBody;
+
+	// Create sphere
+	int x = 237;
+	int y = 237;
+		
+	body_circle.type = b2_dynamicBody;
+	body_circle.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+	b2CircleShape circleShape;
+	circleShape.m_radius = PIXEL_TO_METERS(26.0f);
+	
+	
+	b2FixtureDef circleFix;
+	circleFix.shape = &circleShape;
+	circleFix.density = 1.0f;
+
+	circle_b->body = world->CreateBody(&body_circle);
+	circle_b->body->CreateFixture(&circleFix);
+	circle_b->body->SetGravityScale(0.0f);
+
+	//Create boxes
+	b2FixtureDef boxFix1;
+	b2PolygonShape box1;
+	//237-204 = 33
+	box1.SetAsBox(PIXEL_TO_METERS(5), PIXEL_TO_METERS(8), { 0, PIXEL_TO_METERS((237 - 204)) }, 0);
+	boxFix1.shape = &box1;
+	boxFix1.density = 1.0f;
+
+	circle_b->body->CreateFixture(&boxFix1);	
+	//--------------------------
+	b2FixtureDef boxFix2;
+	b2PolygonShape box2;
+	//260,213
+	
+	box2.SetAsBox(PIXEL_TO_METERS(5), PIXEL_TO_METERS(8), { PIXEL_TO_METERS((237 - 260)), PIXEL_TO_METERS((237 - 213)) }, 0.7853f);//45 degrees
+	boxFix2.shape = &box2;
+	boxFix2.density = 1.0f;
+
+	circle_b->body->CreateFixture(&boxFix2);
+
+	//--------------------------
+	b2FixtureDef boxFix3;
+	b2PolygonShape box3;
+	//260,213
+
+	box3.SetAsBox(PIXEL_TO_METERS(5), PIXEL_TO_METERS(8), { PIXEL_TO_METERS((237 - 269)), PIXEL_TO_METERS((0)) }, 1.571f);//90 degrees
+	boxFix3.shape = &box3;
+	boxFix3.density = 1.0f;
+
+	circle_b->body->CreateFixture(&boxFix3);
+
+	//--------------------------
+	b2FixtureDef boxFix4;
+	b2PolygonShape box4;
+
+	box4.SetAsBox(PIXEL_TO_METERS(5), PIXEL_TO_METERS(8), { PIXEL_TO_METERS((237 - 260)), PIXEL_TO_METERS((237 - 261)) }, 2.3562f);//135 degrees
+	boxFix4.shape = &box4;
+	boxFix4.density = 1.0f;
+
+	circle_b->body->CreateFixture(&boxFix4);
+
+	//--------------------------
+	b2FixtureDef boxFix5;
+	b2PolygonShape box5;
+
+	box5.SetAsBox(PIXEL_TO_METERS(5), PIXEL_TO_METERS(8), { PIXEL_TO_METERS((0)), PIXEL_TO_METERS((237 - 270)) },0.0f);//180 degrees
+	boxFix5.shape = &box5;
+	boxFix5.density = 1.0f;
+
+	circle_b->body->CreateFixture(&boxFix5);
+	//--------------------------
+	b2FixtureDef boxFix6;
+	b2PolygonShape box6;
+
+	box6.SetAsBox(PIXEL_TO_METERS(5), PIXEL_TO_METERS(8), { PIXEL_TO_METERS((237 - 213)), PIXEL_TO_METERS((237 - 260)) }, 3.9269f);//225 degrees
+	boxFix6.shape = &box6;
+	boxFix6.density = 1.0f;
+
+	circle_b->body->CreateFixture(&boxFix6);
+	//--------------------------
+	b2FixtureDef boxFix7;
+	b2PolygonShape box7;
+
+	box7.SetAsBox(PIXEL_TO_METERS(5), PIXEL_TO_METERS(8), { PIXEL_TO_METERS((237 - 203)), PIXEL_TO_METERS((0)) }, 4.7124f);//270 degrees
+	boxFix7.shape = &box7;
+	boxFix7.density = 1.0f;
+
+	circle_b->body->CreateFixture(&boxFix7);
+	//--------------------------
+	b2FixtureDef boxFix8;
+	b2PolygonShape box8;
+
+	box8.SetAsBox(PIXEL_TO_METERS(5), PIXEL_TO_METERS(8), { PIXEL_TO_METERS((237 - 212)), PIXEL_TO_METERS((237 - 213)) }, 5.4978f);//315 degrees
+	boxFix8.shape = &box8;
+	boxFix8.density = 1.0f;
+
+	circle_b->body->CreateFixture(&boxFix8);
+	//--------------------------
+	//Create Pin
+	b2BodyDef body_pin;
+	b2Body* pin_b;
+	body_pin.type = b2_staticBody;
+	int x_g = x - 15;
+	int y_g = y - 60;
+	body_pin.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));	
+	pin_b = world->CreateBody(&body_pin);
+
+	b2PolygonShape pinBox;
+	pinBox.SetAsBox(PIXEL_TO_METERS(5), PIXEL_TO_METERS(5));
+
+	b2FixtureDef fixture_g;
+	fixture_g.shape = &pinBox;
+	fixture_g.density = 1.0f;
+
+	pin_b->CreateFixture(&fixture_g);
+
+
+
+	b2RevoluteJointDef jointDef;
+	jointDef.bodyB = circle_b->body;
+	jointDef.bodyA = pin_b;
+	jointDef.Initialize(circle_b->body, pin_b, pin_b->GetWorldCenter());
+	jointDef.collideConnected = false;
+
+	//jointDef.enableLimit = true;
+	jointDef.maxMotorTorque = 0.25f;
+	jointDef.motorSpeed = 0.0f;
+	jointDef.enableMotor = true;
+
+	b2RevoluteJoint* joint = (b2RevoluteJoint*)world->CreateJoint(&jointDef);
+	return circle_b;
+
+}
+
+
+
+/*
+ p2DynArray <int *> boxCoords;
+ int Box1[8] = {
+ 240, 199,
+ 233, 199,
+ 233, 211,
+ 241, 211
+ };
+ boxCoords.PushBack(Box1);
+ int Box2[8]
+ {
+ 221, 216,
+ 211, 207,
+ 205, 213,
+ 214, 222
+ };
+ boxCoords.PushBack(Box2);
+ int Box3[8]
+ {
+ 209, 234,
+ 198, 234,
+ 198, 242,
+ 210, 242
+ };
+ boxCoords.PushBack(Box3);
+ int Box4[8]
+ {
+ 215, 253,
+ 206, 262,
+ 212, 268,
+ 221, 260
+ };
+ boxCoords.PushBack(Box4);
+ int Box5[8]
+ {
+ 241, 265,
+ 232, 265,
+ 233, 276,
+ 242, 276
+ };
+ boxCoords.PushBack(Box5);
+ int Box6[8]
+ {
+ 258, 254,
+ 252, 260,
+ 262, 269,
+ 268, 262
+
+ };
+ boxCoords.PushBack(Box6);
+ int Box7[8]
+ {
+ 263, 233,
+ 263, 241,
+ 276, 241,
+ 276, 234
+ };
+ boxCoords.PushBack(Box7);
+ int Box8[8]
+ {
+ 252, 215,
+ 259, 222,
+ 268, 213,
+ 262, 207
+ };
+ boxCoords.PushBack(Box8);
+
+ /*Crear les fixtures
+ - Cuadrats
+ -rodona
+ *
+ b2BodyDef body;
+ body.type = b2_dynamicBody;
+ body.gravityScale = 0.0f;
+ b2PolygonShape poly;
+ b2Body* b = world->CreateBody(&body);
+ //p2List<b2FixtureDef> fixtures;
+ b2Vec2 vertices[3];
+ 240, 199,
+ 233, 199,
+ 233, 211,
+ vertices[0].Set(240, 199);
+ vertices[1].Set(233, 199);
+ vertices[2].Set(233, 211);
+
+ b2FixtureDef tmp;
+
+ for (int i = 0; i < 8; i++)
+ {
+ for (int i2 = 0, j = 0; i2 < 8 && j <= 3; i2 += 2, j++)
+ {
+ vertices[j].x = boxCoords[i][i2];
+ vertices[j].y = boxCoords[i][i2];
+ }
+ poly.Set(vertices,3);
+ tmp.shape = &poly;
+ char debug = 'a';
+ char debug1 = 'b';
+ b->CreateFixture(&tmp);
+ }
+
+
+ */
+
 PhysBody* ModulePhysics::AddBody(int x, int y, int diameter, body_type type, float density, float restitution, bool ccd, bool isSensor)
 {
 	b2BodyDef body;
@@ -426,6 +711,7 @@ PhysBody* ModulePhysics::AddEdge(const SDL_Rect& rect, int* points, uint count)
 
 	return ret;
 }
+
 
 void ModulePhysics::DestroyBody(PhysBody* body)
 {

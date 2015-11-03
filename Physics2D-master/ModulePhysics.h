@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "Box2D/Box2D/Box2D.h"
 #include "ModuleRender.h"
+#include "p2DynArray.h"
 #define PIXELS_PER_METER 50.0f // if touched change METER_PER_PIXEL too
 #define METER_PER_PIXEL 0.02f // this is 1 / PIXELS_PER_METER !
 
@@ -22,7 +23,7 @@ enum body_type
 class PhysBody
 {
 public:
-
+	PhysBody(){}
 	PhysBody(b2Body* body, const SDL_Rect& rect, body_type type);
 	~PhysBody();
 
@@ -62,7 +63,9 @@ public:
 	PhysBody* AddBody(int x, int y, int diameter, body_type type = b_dynamic, float density = 1.0f, float restitution = 0.0f, bool ccd = false, bool isSensor = false);
 	PhysBody* AddBody(const SDL_Rect& rect, int* points, uint count, body_type type = b_dynamic, float density = 1.0f, float restitution = 0.0f, bool isSensor = false);
 	PhysBody* AddEdge(const SDL_Rect& rect, int* points, uint count);
-
+	PhysBody* CreateGear(float density = 1.0f, float restitution = 0.0f, bool isSensor = false);
+	//void CreateGearBoxes(const int* _array, b2Vec2* & toFill);
+	
 	void CreateRevoluteJoint(PhysBody* body_1, PhysBody* body_2, int x_pivot_1 = 0, int y_pivot_1 = 0, int x_pivot_2 = 0, int y_pivot_2 = 0, int max_angle = INT_MAX, int min_angle = INT_MIN);
 	void CreateLineJoint(PhysBody* body_1, PhysBody* body_2, int x_pivot_1 = 0, int y_pivot_1 = 0, int x_pivot_2 = 0, int y_pivot_2 = 0, float frequency = 15.0f, float damping = 0.5f);
 	void DestroyBody(PhysBody* body);
@@ -73,8 +76,8 @@ public:
 	//void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse);
 	
 private:
-	b2Vec2 startPos;
-	PhysBody* body_clicked;
+	b2Body * ground;
+	b2Body* body_clicked;
 	b2MouseJoint* mouse_joint;
 	b2World* world;
 	p2List<PhysBody*> bodies;

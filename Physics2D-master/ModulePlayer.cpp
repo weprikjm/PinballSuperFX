@@ -23,20 +23,23 @@ bool ModulePlayer::Start()
 	ball.graphic = App->textures->Load("pinball/ball.png");
 	flipper1.graphic = App->textures->Load("pinball/flipperLeft.png");
 	flipper2.graphic = App->textures->Load("pinball/flipperRight.png");
-	//flipper1.fx = flipper2.fx = App->audio->LoadFx("pinball/flipperLeft.wav");
+	flipper1.fx = flipper2.fx = App->audio->LoadFx("pinball/flipper.wav");
 	
-
-	createStandardBall(502, 582, 18, 1.0f, 0.3f, false);
-	ball.fx = App->audio->LoadFx("pinball/ball_bounce.wav");
-	ball.body->listener = this;
-
 	flipper_up1.graphic = App->textures->Load("pinball/flipperLeftBig.png");
 	flipper_up2.graphic = App->textures->Load("pinball/flipperRightBig.png");
 	
 	spring.graphic = App->textures->Load("pinball/spring.png");
-	//spring.fx = App->audio->LoadFx("pinballflipperLeft.wav");
+	spring.fx = App->audio->LoadFx("pinball/spring.wav");
 	
+	
+	
+	b2Vec2 ballPosInit;
+	ballPosInit.y = 582;
+	ballPosInit.x = 502;
 
+	ball.body = App->physics->AddBody(ballPosInit.x, ballPosInit.y, 18, b_dynamic, 1.0f, 0.3f, true);
+	ball.fx = App->audio->LoadFx("pinball/ball_bounce.wav");
+	ball.body->listener = this;
 	
 	// Pivot 0, 0
 	// Pivot -145, -579
@@ -56,13 +59,28 @@ bool ModulePlayer::Start()
 	//flipper1.body->listener = this;
 
 
+	int flipperRightU[14] = {
+		36, 0,
+		31, 11,
+		5, 34,
+		16, 31,
+		37, 21,
+		49, 13,
+		53, 4
+	};
+
+
+	flipper2.body = App->physics->AddBody({ 334, 585, 0, 0 }, flipperRightU, 14, b_dynamic, 1.0f, 0.2f);
+	flipper2_wheel = App->physics->AddBody(334, 585, 3, b_static);
+	App->physics->CreateRevoluteJoint(flipper2.body, flipper2_wheel, 50, 0, 0, 0, 0, -60);
+
 
 	// Pivot -178, -649
 	int flipperLeftD[16] = {
 		12, 2,
 		25, 11,
 		45, 26,
-		63, 42,
+		60, 42,
 		53, 40,
 		26, 29,
 		6, 17,
@@ -73,11 +91,9 @@ bool ModulePlayer::Start()
 	flipper_up1_wheel = App->physics->AddBody(180, 653, 3, b_static);
 	App->physics->CreateRevoluteJoint(flipper_up1.body, flipper_up1_wheel, 8, 7, 0, 0, 60, 0);
 
-	 
-
-
 	
-	// Pivot 0, 0
+	
+	
 
 	// Pivot -336, -578
 	// Pivot -256, -649
@@ -96,177 +112,38 @@ bool ModulePlayer::Start()
 	flipper_up2.body = App->physics->AddBody({ 250, 645, 0, 0 }, flipperRightD, 16, b_dynamic);
 	flipper_up2_wheel = App->physics->AddBody(300, 645, 3, b_static);
 	App->physics->CreateRevoluteJoint(flipper_up2.body, flipper_up2_wheel, 50, 0, 0, 0, 0, -60);
-
-
-
-
-
-
-	int flipperRightU[14] = {
-		36, 0,
-		31, 11,
-		5, 34,
-		16, 31,
-		37, 21,
-		49, 13,
-		53, 4
-	};
-
-	
-	flipper2.body = App->physics->AddBody({ /*334*/334, 585, 0, 0 }, flipperRightU, 14, b_dynamic, 1.0f, 0.2f);
-	flipper2_wheel = App->physics->AddBody(334, 585, 3, b_static);
-	App->physics->CreateRevoluteJoint(flipper2.body, flipper2_wheel, 50, 0, 0, 0, 0, -60);
-	
-	
 	
 	
 
-
-
-	/*
-	
-	
-	
-	
-	
-	*/
-	
-	
-	
-	
-	
-
-	
-	
-	
-	
-	/*
-	
-	int Capture[4] = {
-		482, 697,
-		496, 697
-	};
-
-	*/
 	
 	spring.body = App->physics->AddBody({486, 900, 15, 65}, b_dynamic);
 	spring_wheel = App->physics->AddBody(476, 650, 10, b_static);
 	App->physics->CreateLineJoint(spring.body, spring_wheel, 0, 0, 0, 0, 20.0f, 1.0f);
 	
 	
-	/*
-
-	//Flippers
-	//Left Flipper
-
-
-
-	int anchorLeftFlipper[8] = {
-	144, 572,
-	134, 585,
-	145, 590,
-	155, 577
-	};
-
-
-
-	int LeftFlipper[26] = {
-	147, 575,
-	141, 584,
-	143, 589,
-	147, 594,
-	154, 598,
-	163, 602,
-	170, 604,
-	178, 607,
-	185, 609,
-	191, 612,
-	173, 593,
-	163, 585,
-	153, 579
-	};
-
-	b2Vec2 FlipperPosition;
-	b2Vec2 FlipperAnchorA;
-	b2Vec2 FlipperAnchorB;
-
-	FlipperPosition.Set(148, 587);
-
-	FlipperAnchorA.Set(155, 585);
-	FlipperAnchorB.Set(-20, -0);
-
-	b2RevoluteJoint* LeftFlipperBody = App->physics->CreateFlipper(x, y, anchorLeftFlipper, 8, FlipperAnchorA, FlipperPosition, FlipperAnchorB, LeftFlipper, -0.16f, 0.16f);
-
-	FlipperPosition.Set(187, 657);
-
-	FlipperAnchorA.Set(177, 657);
-	FlipperAnchorB.Set(-20, 0);
-
-	b2RevoluteJoint* LeftFlipperDownBody = App->physics->CreateFlipper(x, y, anchorLeftFlipper, 8, FlipperAnchorA, FlipperPosition, FlipperAnchorB, LeftFlipper, -0.16f, 0.16f);
-
-	FlipperPosition.Set(400, 580);
-
-	FlipperAnchorA.Set(335, 584);
-	FlipperAnchorB.Set(10, 10);
-
-	//b2RevoluteJoint* RightFlipperBody = App->physics->CreateFlipper(x, y, anchorLeftFlipper, 8, FlipperAnchorA, FlipperPosition, FlipperAnchorB, LeftFlipper);
-
-	FlipperPosition.Set(200, 580);
-
-	FlipperAnchorA.Set(310, 655);
-	FlipperAnchorB.Set(10, 10);
-
-	//b2RevoluteJoint* RightFlipperDownBody = App->physics->CreateFlipper(x, y, anchorLeftFlipper, 8, FlipperAnchorA, FlipperPosition, FlipperAnchorB, LeftFlipper);
-
-
-	//RightFlipper
-
-	//Rotating Gear
-	App->physics->CreateGear(237, 237, 26.0f);
-
-	*/
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
 	return true;
 }
 
-
-void  ModulePlayer::createStandardBall(int x, int y, unsigned int radius, float density, float restitution, bool isSensor)
-{
-
-	ball.body = App->physics->AddBody(x, y, radius, b_dynamic, 1.0f, 0.3f, isSensor);
-	
-}
 // Unload assets
 bool ModulePlayer::CleanUp()
 {
 	LOG("Unloading player");
-
-	return true;
 
 	App->textures->Unload(ball.graphic);
 	App->textures->Unload(flipper1.graphic);
 	App->textures->Unload(flipper2.graphic);
 	App->textures->Unload(flipper_up1.graphic);
 	App->textures->Unload(flipper_up2.graphic);
+	App->textures->Unload(spring.graphic);
 
 	App->physics->DestroyBody(ball.body);
 	App->physics->DestroyBody(flipper1.body);
 	App->physics->DestroyBody(flipper2.body);
-
+	App->physics->DestroyBody(spring.body);
+	//App->physics->DestroyBody(
 	return true;
 }
 
@@ -287,19 +164,19 @@ update_status ModulePlayer::Update()
 
 	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 	{
-		flipper1.body->Turn(-360);
-		flipper_up1.body->Turn(-360);
+		flipper1.body->Turn(-90);
+		flipper_up1.body->Turn(-90);
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 	{
-		flipper2.body->Turn(360);
-		flipper_up2.body->Turn(360);
+		flipper2.body->Turn(90);
+		flipper_up2.body->Turn(90);
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 	{
-		spring_push += 175.0f;
+		spring_push += 275.0f;
 		spring.body->Push(0, spring_push);
 	}
 	else
@@ -332,6 +209,10 @@ update_status ModulePlayer::Update()
 	spring.body->GetPosition(x, y);
 	App->renderer->Blit(spring.graphic, x, y, NULL, 1.0f, spring.body->GetAngle());
 	
+
+
+
+
 	return UPDATE_CONTINUE;
 }
 
@@ -342,15 +223,33 @@ void ModulePlayer::ballBlit()
 	int x, y;
 
 	ball.body->GetPosition(x, y);
+
 	//this->ballPosInit.x;
 	//this->ballPosInit.y;
 	if (y > 900)
 	{
 		ball.body->SetPosition(502, 582);
+		ball.body->SetLinearSpeed(0, 0);
 		x = 598;
 		y = 575;
 		App->audio->PlayFx(spring.fx);
 		lives--;
+
+		if (lives == 1)
+			globalScore = score;
+		else
+			globalScore += score;
+		
+		score = 0;
+
+		if (lives < 0)//XML SAVE
+		{
+			lives = 2;
+			score = 0;
+			//xmlNode = globalScore
+			//globalScore = 0;
+		}
+
 	}
 	App->renderer->Blit(ball.graphic, x, y, NULL, 1.0f);
 

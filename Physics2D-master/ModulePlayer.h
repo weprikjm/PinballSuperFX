@@ -26,7 +26,6 @@ public:
 	update_status Update();
 	bool CleanUp();
 	void ballBlit();
-	void createStandardBall(int x, int y, unsigned int radius, float density, float restitution, bool isSensor);
 public:
 
 	Object ball;
@@ -50,5 +49,6 @@ public:
 	int score;
 	int globalScore;
 
+	Object metalGear;
 
 };
