@@ -360,7 +360,7 @@ b2Body* ModulePhysics::CreateGear(float density, float restitution, bool isSenso
 	b2FixtureDef boxFix1;
 	b2PolygonShape box1;
 	//237-204 = 33
-	box1.SetAsBox(PIXEL_TO_METERS(5), PIXEL_TO_METERS(8), { 0, PIXEL_TO_METERS(33) }, 0);
+	box1.SetAsBox(PIXEL_TO_METERS(5), PIXEL_TO_METERS(8), { 0, PIXEL_TO_METERS((237 - 204)) }, 0);
 	boxFix1.shape = &box1;
 	boxFix1.density = 1.0f;
 
@@ -369,22 +369,78 @@ b2Body* ModulePhysics::CreateGear(float density, float restitution, bool isSenso
 	b2FixtureDef boxFix2;
 	b2PolygonShape box2;
 	//260,213
-	//45 degrees
-	box2.SetAsBox(PIXEL_TO_METERS(5), PIXEL_TO_METERS(8), { PIXEL_TO_METERS((237 - 260)), PIXEL_TO_METERS((237 - 213)) }, 0.7853f);
+	
+	box2.SetAsBox(PIXEL_TO_METERS(5), PIXEL_TO_METERS(8), { PIXEL_TO_METERS((237 - 260)), PIXEL_TO_METERS((237 - 213)) }, 0.7853f);//45 degrees
 	boxFix2.shape = &box2;
 	boxFix2.density = 1.0f;
 
 	circle_b->CreateFixture(&boxFix2);
 
+	//--------------------------
+	b2FixtureDef boxFix3;
+	b2PolygonShape box3;
+	//260,213
+
+	box3.SetAsBox(PIXEL_TO_METERS(5), PIXEL_TO_METERS(8), { PIXEL_TO_METERS((237 - 269)), PIXEL_TO_METERS((0)) }, 1.571f);//90 degrees
+	boxFix3.shape = &box3;
+	boxFix3.density = 1.0f;
+
+	circle_b->CreateFixture(&boxFix3);
+
+	//--------------------------
+	b2FixtureDef boxFix4;
+	b2PolygonShape box4;
+
+	box4.SetAsBox(PIXEL_TO_METERS(5), PIXEL_TO_METERS(8), { PIXEL_TO_METERS((237 - 260)), PIXEL_TO_METERS((237 - 261)) }, 2.3562f);//135 degrees
+	boxFix4.shape = &box4;
+	boxFix4.density = 1.0f;
+
+	circle_b->CreateFixture(&boxFix4);
+
+	//--------------------------
+	b2FixtureDef boxFix5;
+	b2PolygonShape box5;
+
+	box5.SetAsBox(PIXEL_TO_METERS(5), PIXEL_TO_METERS(8), { PIXEL_TO_METERS((0)), PIXEL_TO_METERS((237 - 270)) },0.0f);//180 degrees
+	boxFix5.shape = &box5;
+	boxFix5.density = 1.0f;
+
+	circle_b->CreateFixture(&boxFix5);
+	//--------------------------
+	b2FixtureDef boxFix6;
+	b2PolygonShape box6;
+
+	box6.SetAsBox(PIXEL_TO_METERS(5), PIXEL_TO_METERS(8), { PIXEL_TO_METERS((237 - 213)), PIXEL_TO_METERS((237 - 260)) }, 3.9269f);//225 degrees
+	boxFix6.shape = &box6;
+	boxFix6.density = 1.0f;
+
+	circle_b->CreateFixture(&boxFix6);
+	//--------------------------
+	b2FixtureDef boxFix7;
+	b2PolygonShape box7;
+
+	box7.SetAsBox(PIXEL_TO_METERS(5), PIXEL_TO_METERS(8), { PIXEL_TO_METERS((237 - 203)), PIXEL_TO_METERS((0)) }, 4.7124f);//270 degrees
+	boxFix7.shape = &box7;
+	boxFix7.density = 1.0f;
+
+	circle_b->CreateFixture(&boxFix7);
+	//--------------------------
+	b2FixtureDef boxFix8;
+	b2PolygonShape box8;
+
+	box8.SetAsBox(PIXEL_TO_METERS(5), PIXEL_TO_METERS(8), { PIXEL_TO_METERS((237 - 203)), PIXEL_TO_METERS((0)) }, 5.4978f);//315 degrees
+	boxFix8.shape = &box8;
+	boxFix8.density = 1.0f;
+
+	circle_b->CreateFixture(&boxFix8);
+	//--------------------------
 	//Create Pin
 	b2BodyDef body_pin;
 	b2Body* pin_b;
 	body_pin.type = b2_staticBody;
 	int x_g = x - 15;
 	int y_g = y - 60;
-	body_pin.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
-
-	
+	body_pin.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));	
 	pin_b = world->CreateBody(&body_pin);
 
 	b2PolygonShape pinBox;
