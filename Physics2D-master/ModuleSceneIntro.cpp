@@ -26,18 +26,67 @@ bool ModuleSceneIntro::Start()
 
 	// Graphics
 	graphics = App->textures->Load("pinball/Capture.png");
-	/*bouncer1.texture = bouncer2.texture = App->textures->Load("pinball/bouncer_hit.png");
+	bouncer1.texture = bouncer2.texture = bouncer3.texture = bouncer4.texture = bouncer5.texture = bouncer6.texture = bouncer7.texture = App->textures->Load("pinball/bouncerB.png");
+	bouncer8.texture = App->textures->Load("pinball/rightBouncer.png");
 	side_bouncer1.texture = App->textures->Load("pinball/left_bouncer_hit.png");
 	side_bouncer2.texture = App->textures->Load("pinball/right_bouncer_hit.png");
 
-	bouncer1.fx = bouncer2.fx = App->audio->LoadFx("pinball/ding_short.wav");
-	side_bouncer1.fx = side_bouncer2.fx = App->audio->LoadFx("pinball/ring.wav");
-
+	bouncer1.fx = bouncer2.fx = bouncer3.fx = bouncer4.fx = bouncer5.fx = bouncer6.fx = bouncer7.fx = App->audio->LoadFx("pinball/ding_short.wav");
+	bouncer8.fx = bouncer9.fx = App->audio->LoadFx("pinball/ring.wav");
+	
+	
+	/*
 	player_lose_fx = App->audio->LoadFx("pinball/long_bonus.wav");
 	*/
 
 
 	LoadCollisionMap();
+
+	bouncer1.body = App->physics->AddBody(110, 212, 34, b_static, 1.0f, 1.5f);
+	bouncer1.body->listener = this;
+
+	bouncer2.body = App->physics->AddBody(152, 293, 34, b_static, 1.0f, 1.5f);
+	bouncer2.body->listener = this;
+
+	bouncer3.body = App->physics->AddBody(116, 120, 34, b_static, 1.0f, 1.5f);
+	bouncer3.body->listener = this;
+
+	bouncer4.body = App->physics->AddBody(194, 120, 34, b_static, 1.0f, 1.5f);
+	bouncer4.body->listener = this;
+
+	bouncer5.body = App->physics->AddBody(272, 120, 34, b_static, 1.0f, 1.5f);
+	bouncer5.body->listener = this;
+
+	bouncer6.body = App->physics->AddBody(344, 120, 34, b_static, 1.0f, 1.5f);
+	bouncer6.body->listener = this;
+
+	bouncer7.body = App->physics->AddBody(317, 230, 34, b_static, 1.0f, 1.5f);
+	bouncer7.body->listener = this;
+	
+	int bouncerSide1[10] = {
+		29, 1,
+		33, 3,
+		4, 49,
+		0, 46,
+		27, 4
+	};
+
+
+	SDL_Rect bs1 = { 340, 482, 0, 0 };
+	bouncer8.body = App->physics->AddBody(bs1, bouncerSide1, 10, b_static);
+
+
+	int bouncerSide2[10] = {
+		1, 3,
+		34, 49,
+		38, 45,
+		5, 0,
+		0, -2
+	};
+
+	SDL_Rect bs2 = { 125, 484, 0, 0 };
+	bouncer9.body = App->physics->AddBody(bs2, bouncerSide2, 10, b_static);
+
 
 
 	return ret;
@@ -62,7 +111,7 @@ update_status ModuleSceneIntro::Update()
 	if(bouncer1.hit_timer > 0)
 	{
 		if(SDL_TICKS_PASSED(SDL_GetTicks(), bouncer1.hit_timer) == false)
-			App->renderer->Blit(bouncer1.texture, 237, 155);
+			App->renderer->Blit(bouncer1.texture, 94, 193);
 		else
 			bouncer1.hit_timer = 0;
 	}
@@ -70,10 +119,67 @@ update_status ModuleSceneIntro::Update()
 	if(bouncer2.hit_timer > 0)
 	{
 		if(SDL_TICKS_PASSED(SDL_GetTicks(), bouncer2.hit_timer) == false)
-			App->renderer->Blit(bouncer2.texture, 323, 150);
+			App->renderer->Blit(bouncer2.texture, 136, 274);
 		else
 			bouncer2.hit_timer = 0;
 	}
+
+	if (bouncer3.hit_timer > 0)
+	{
+		if (SDL_TICKS_PASSED(SDL_GetTicks(), bouncer3.hit_timer) == false)
+			App->renderer->Blit(bouncer3.texture, 100, 101);
+		else
+			bouncer3.hit_timer = 0;
+	}
+
+	if (bouncer4.hit_timer > 0)
+	{
+		if (SDL_TICKS_PASSED(SDL_GetTicks(), bouncer4.hit_timer) == false)
+			App->renderer->Blit(bouncer4.texture, 178, 101);
+		else
+			bouncer4.hit_timer = 0;
+	}
+
+	if (bouncer5.hit_timer > 0)
+	{
+		if (SDL_TICKS_PASSED(SDL_GetTicks(), bouncer5.hit_timer) == false)
+			App->renderer->Blit(bouncer5.texture, 256, 101);
+		else
+			bouncer5.hit_timer = 0;
+	}
+
+	if (bouncer6.hit_timer > 0)
+	{
+		if (SDL_TICKS_PASSED(SDL_GetTicks(), bouncer6.hit_timer) == false)
+			App->renderer->Blit(bouncer6.texture, 328, 101);
+		else
+			bouncer6.hit_timer = 0;
+	}
+	if (bouncer7.hit_timer > 0)
+	{
+		if (SDL_TICKS_PASSED(SDL_GetTicks(), bouncer7.hit_timer) == false)
+			App->renderer->Blit(bouncer7.texture, 301, 211);
+		else
+			bouncer7.hit_timer = 0;
+	}
+
+	if (bouncer8.hit_timer > 0)
+	{
+		if (SDL_TICKS_PASSED(SDL_GetTicks(), bouncer8.hit_timer) == false)
+			App->renderer->Blit(bouncer8.texture, 301, 211);
+		else
+			bouncer8.hit_timer = 0;
+	}
+
+	if (bouncer9.hit_timer > 0)
+	{
+		if (SDL_TICKS_PASSED(SDL_GetTicks(), bouncer9.hit_timer) == false)
+			App->renderer->Blit(bouncer9.texture, 301, 211);
+		else
+			bouncer9.hit_timer = 0;
+	}
+
+
 
 	if(side_bouncer1.hit_timer > 0)
 	{
@@ -119,6 +225,7 @@ void ModuleSceneIntro::OnCollision(PhysBody* body1, PhysBody* body2)
 	{
 		bouncer1.hit_timer = SDL_GetTicks() + BOUNCER_TIME;
 		App->audio->PlayFx(bouncer1.fx);
+		App->player->score += 50;
 		return;
 	}
 	
@@ -128,6 +235,63 @@ void ModuleSceneIntro::OnCollision(PhysBody* body1, PhysBody* body2)
 		App->audio->PlayFx(bouncer2.fx);
 		return;
 	}
+
+	if (bouncer3.body == body1)
+	{
+		bouncer3.hit_timer = SDL_GetTicks() + BOUNCER_TIME;
+		App->audio->PlayFx(bouncer3.fx);
+		App->player->score += 50;
+		return;
+	}
+
+	if (bouncer4.body == body1)
+	{
+		bouncer4.hit_timer = SDL_GetTicks() + BOUNCER_TIME;
+		App->audio->PlayFx(bouncer4.fx);
+		App->player->score += 50;
+		return;
+	}
+
+	if (bouncer5.body == body1)
+	{
+		bouncer5.hit_timer = SDL_GetTicks() + BOUNCER_TIME;
+		App->audio->PlayFx(bouncer5.fx);
+		App->player->score += 50;
+		return;
+	}
+
+	if (bouncer6.body == body1)
+	{
+		bouncer6.hit_timer = SDL_GetTicks() + BOUNCER_TIME;
+		App->audio->PlayFx(bouncer6.fx);
+		App->player->score += 50;
+		return;
+	}
+
+	if (bouncer7.body == body1)
+	{
+		bouncer7.hit_timer = SDL_GetTicks() + BOUNCER_TIME;
+		App->audio->PlayFx(bouncer7.fx);
+		App->player->score += 50;
+		return;
+	}
+
+	if (bouncer8.body == body1)
+	{
+		bouncer8.hit_timer = SDL_GetTicks() + BOUNCER_TIME;
+		App->audio->PlayFx(bouncer8.fx);
+		App->player->score += 100;
+		return;
+	}
+
+	if (bouncer9.body == body1)
+	{
+		bouncer9.hit_timer = SDL_GetTicks() + BOUNCER_TIME;
+		App->audio->PlayFx(bouncer9.fx);
+		App->player->score += 100;
+		return;
+	}
+
 
 	if(side_bouncer1.body == body1)
 	{
@@ -438,7 +602,7 @@ bool ModuleSceneIntro::LoadCollisionMap()
 	};
 
 	App->physics->AddEdge({ 0, 0, 0, 0 }, Left_bar, 8);
-	/*
+	
 	//Obstacles
 	int Obstacle_1[16] = {
 		91, 123,
@@ -486,7 +650,7 @@ bool ModuleSceneIntro::LoadCollisionMap()
 		326, 148,
 		326, 121
 	};
-	App->physics->AddEdge({ 0, 0, 0, 0 }, Obstacle_4, 16);*/
+	App->physics->AddEdge({ 0, 0, 0, 0 }, Obstacle_4, 16);
 
 	int Obstacle_Aux[26] = {
 		371, 144,

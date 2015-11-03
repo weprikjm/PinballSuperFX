@@ -255,15 +255,33 @@ void ModulePlayer::ballBlit()
 	int x, y;
 
 	ball.body->GetPosition(x, y);
+
 	//this->ballPosInit.x;
 	//this->ballPosInit.y;
 	if (y > 900)
 	{
 		ball.body->SetPosition(502, 582);
+		ball.body->SetLinearSpeed(0, 0);
 		x = 598;
 		y = 575;
 		App->audio->PlayFx(spring.fx);
 		lives--;
+
+		if (lives == 1)
+			globalScore = score;
+		else
+			globalScore += score;
+		
+		score = 0;
+
+		if (lives < 0)//XML SAVE
+		{
+			lives = 2;
+			score = 0;
+			//xmlNode = globalScore
+			//globalScore = 0;
+		}
+
 	}
 	App->renderer->Blit(ball.graphic, x, y, NULL, 1.0f);
 
