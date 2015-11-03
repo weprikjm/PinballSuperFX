@@ -41,25 +41,25 @@ bool ModuleSceneIntro::Start()
 
 	LoadCollisionMap();
 
-	bouncer1.body = App->physics->AddBody(110, 212, 34, b_static, 1.0f, 1.5f);
+	bouncer1.body = App->physics->AddBody(110, 212, 34, b_static, 1.0f, 1.0f);
 	bouncer1.body->listener = this;
 
-	bouncer2.body = App->physics->AddBody(152, 293, 34, b_static, 1.0f, 1.5f);
+	bouncer2.body = App->physics->AddBody(152, 293, 34, b_static, 1.0f, 1.0f);
 	bouncer2.body->listener = this;
 
-	bouncer3.body = App->physics->AddBody(116, 120, 34, b_static, 1.0f, 1.5f);
+	bouncer3.body = App->physics->AddBody(116, 120, 34, b_static, 1.0f, 1.0f);
 	bouncer3.body->listener = this;
 
-	bouncer4.body = App->physics->AddBody(194, 120, 34, b_static, 1.0f, 1.5f);
+	bouncer4.body = App->physics->AddBody(194, 120, 34, b_static, 1.0f, 1.0f);
 	bouncer4.body->listener = this;
 
-	bouncer5.body = App->physics->AddBody(272, 120, 34, b_static, 1.0f, 1.5f);
+	bouncer5.body = App->physics->AddBody(272, 120, 34, b_static, 1.0f, 1.0f);
 	bouncer5.body->listener = this;
 
-	bouncer6.body = App->physics->AddBody(344, 120, 34, b_static, 1.0f, 1.5f);
+	bouncer6.body = App->physics->AddBody(344, 120, 34, b_static, 1.0f, 1.0f);
 	bouncer6.body->listener = this;
 
-	bouncer7.body = App->physics->AddBody(317, 230, 34, b_static, 1.0f, 1.5f);
+	bouncer7.body = App->physics->AddBody(317, 230, 34, b_static, 1.0f, 1.0f);
 	bouncer7.body->listener = this;
 	
 	int bouncerSide1[10] = {
@@ -72,7 +72,7 @@ bool ModuleSceneIntro::Start()
 
 
 	SDL_Rect bs1 = { 340, 482, 0, 0 };
-	bouncer8.body = App->physics->AddBody(bs1, bouncerSide1, 10, b_static);
+	bouncer8.body = App->physics->AddBody(bs1, bouncerSide1, 10, b_static,1.0f, 1.5f);
 
 
 	int bouncerSide2[10] = {
@@ -84,7 +84,7 @@ bool ModuleSceneIntro::Start()
 	};
 
 	SDL_Rect bs2 = { 125, 484, 0, 0 };
-	bouncer9.body = App->physics->AddBody(bs2, bouncerSide2, 10, b_static);
+	bouncer9.body = App->physics->AddBody(bs2, bouncerSide2, 10, b_static,1.0f, 1.5f);
 
 
 
