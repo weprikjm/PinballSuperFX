@@ -28,12 +28,11 @@ bool ModuleSceneIntro::Start()
 	graphics = App->textures->Load("pinball/Capture.png");
 	bouncer1.texture = bouncer2.texture = bouncer3.texture = bouncer4.texture = bouncer5.texture = bouncer6.texture = bouncer7.texture = App->textures->Load("pinball/bouncerB.png");
 	bouncer8.texture = App->textures->Load("pinball/rightBouncer.png");
-	side_bouncer1.texture = App->textures->Load("pinball/left_bouncer_hit.png");
-	side_bouncer2.texture = App->textures->Load("pinball/right_bouncer_hit.png");
-
-	bouncer1.fx = bouncer2.fx = bouncer3.fx = bouncer4.fx = bouncer5.fx = bouncer6.fx = bouncer7.fx = App->audio->LoadFx("pinball/ding_short.wav");
-	bouncer8.fx = bouncer9.fx = App->audio->LoadFx("pinball/ring.wav");
 	
+
+	bouncer1.fx = bouncer2.fx = bouncer3.fx = bouncer4.fx = bouncer5.fx = bouncer6.fx = bouncer7.fx = App->audio->LoadFx("pinball/ring.wav");
+	bouncer8.fx = bouncer9.fx = App->audio->LoadFx("pinball/ring.wav");
+	App->audio->PlayMusic("pinball/ramiSong.ogg");
 	
 	/*
 	player_lose_fx = App->audio->LoadFx("pinball/long_bonus.wav");

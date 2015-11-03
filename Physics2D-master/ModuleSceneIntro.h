@@ -87,6 +87,6 @@ public:
 	PhysBody* player_lose;
 	uint player_lose_fx;
 
-	Mix_Chunk* sceneMusic;
+	Mix_Chunk sceneMusic;
 
 };

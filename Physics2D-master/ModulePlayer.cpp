@@ -29,7 +29,7 @@ bool ModulePlayer::Start()
 	flipper_up2.graphic = App->textures->Load("pinball/flipperRightBig.png");
 	
 	spring.graphic = App->textures->Load("pinball/spring.png");
-	//spring.fx = App->audio->LoadFx("pinballflipperLeft.wav");
+	spring.fx = App->audio->LoadFx("pinball/spring.wav");
 	
 
 	
