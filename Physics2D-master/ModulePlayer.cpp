@@ -156,7 +156,7 @@ bool ModulePlayer::Start()
 	spring_wheel = App->physics->AddBody(476, 650, 10, b_static);
 	App->physics->CreateLineJoint(spring.body, spring_wheel, 0, 0, 0, 0, 20.0f, 1.0f);
 	
-//	metalGear.body->App->physics->AddBody()
+	/*metalGear.body->body = */App->physics->CreateGear();
 
 
 

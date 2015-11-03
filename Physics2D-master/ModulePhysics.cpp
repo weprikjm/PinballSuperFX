@@ -307,6 +307,209 @@ PhysBody* ModulePhysics::AddBody(const SDL_Rect& rect, body_type type, float den
 
 	return ret;
 }
+
+
+/*
+
+b2Vec2* ModulePhysics::CreateGearBoxes(const int* _array, b2Vec2* & toFill)
+{
+	b2Vec2 ret[4];
+	if (_array)
+	{
+		
+		
+	}
+
+	return NULL;
+
+}*/
+b2Body* ModulePhysics::CreateGear(float density, float restitution, bool isSensor)
+{
+	
+	/*
+	Crear els bodies i la rotation(o gear) joint
+	*/
+
+	//
+	//x:237 y:237: radius:26.0f
+	//Create Gear squares
+	
+	b2BodyDef body_circle;
+	b2Body* circle_b;
+
+
+	// Create sphere
+	int x = 237;
+	int y = 237;
+		
+	body_circle.type = b2_dynamicBody;
+	body_circle.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+	b2CircleShape circleShape;
+	circleShape.m_radius = PIXEL_TO_METERS(26.0f);
+	
+	
+	b2FixtureDef circleFix;
+	circleFix.shape = &circleShape;
+	circleFix.density = 1.0f;
+
+	circle_b = world->CreateBody(&body_circle);
+	circle_b->CreateFixture(&circleFix);
+	circle_b->SetGravityScale(0.0f);
+
+	//Create boxes
+	b2FixtureDef boxFix;
+
+	b2PolygonShape box1;
+	//237-204 = 33
+	box1.SetAsBox(PIXEL_TO_METERS(5), PIXEL_TO_METERS(8), { 0, PIXEL_TO_METERS(33) }, 0);
+	
+	boxFix.shape = &box1;
+	boxFix.density = 1.0f;
+
+	circle_b->CreateFixture(&boxFix);
+	
+
+	//Create Pin
+	b2BodyDef body_pin;
+	b2Body* pin_b;
+	body_pin.type = b2_staticBody;
+	int x_g = x - 15;
+	int y_g = y - 60;
+	body_pin.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+
+	pin_b = world->CreateBody(&body_pin);
+
+	b2PolygonShape pinBox;
+	pinBox.SetAsBox(PIXEL_TO_METERS(5), PIXEL_TO_METERS(5));
+
+	b2FixtureDef fixture_g;
+	fixture_g.shape = &pinBox;
+	fixture_g.density = 1.0f;
+
+	pin_b->CreateFixture(&fixture_g);
+
+	b2RevoluteJointDef jointDef;
+	jointDef.bodyB = circle_b;
+	jointDef.bodyA = pin_b;
+	jointDef.Initialize(circle_b, pin_b, pin_b->GetWorldCenter());
+	jointDef.collideConnected = false;
+
+	//jointDef.enableLimit = true;
+	jointDef.maxMotorTorque = 0.1f;
+	jointDef.motorSpeed = 0.0f;
+	jointDef.enableMotor = true;
+
+	b2RevoluteJoint* joint = (b2RevoluteJoint*)world->CreateJoint(&jointDef);
+
+	return circle_b;
+
+}
+
+
+
+/*
+ p2DynArray <int *> boxCoords;
+ int Box1[8] = {
+ 240, 199,
+ 233, 199,
+ 233, 211,
+ 241, 211
+ };
+ boxCoords.PushBack(Box1);
+ int Box2[8]
+ {
+ 221, 216,
+ 211, 207,
+ 205, 213,
+ 214, 222
+ };
+ boxCoords.PushBack(Box2);
+ int Box3[8]
+ {
+ 209, 234,
+ 198, 234,
+ 198, 242,
+ 210, 242
+ };
+ boxCoords.PushBack(Box3);
+ int Box4[8]
+ {
+ 215, 253,
+ 206, 262,
+ 212, 268,
+ 221, 260
+ };
+ boxCoords.PushBack(Box4);
+ int Box5[8]
+ {
+ 241, 265,
+ 232, 265,
+ 233, 276,
+ 242, 276
+ };
+ boxCoords.PushBack(Box5);
+ int Box6[8]
+ {
+ 258, 254,
+ 252, 260,
+ 262, 269,
+ 268, 262
+
+ };
+ boxCoords.PushBack(Box6);
+ int Box7[8]
+ {
+ 263, 233,
+ 263, 241,
+ 276, 241,
+ 276, 234
+ };
+ boxCoords.PushBack(Box7);
+ int Box8[8]
+ {
+ 252, 215,
+ 259, 222,
+ 268, 213,
+ 262, 207
+ };
+ boxCoords.PushBack(Box8);
+
+ /*Crear les fixtures
+ - Cuadrats
+ -rodona
+ *
+ b2BodyDef body;
+ body.type = b2_dynamicBody;
+ body.gravityScale = 0.0f;
+ b2PolygonShape poly;
+ b2Body* b = world->CreateBody(&body);
+ //p2List<b2FixtureDef> fixtures;
+ b2Vec2 vertices[3];
+ 240, 199,
+ 233, 199,
+ 233, 211,
+ vertices[0].Set(240, 199);
+ vertices[1].Set(233, 199);
+ vertices[2].Set(233, 211);
+ b2FixtureDef tmp;
+
+ for (int i = 0; i < 8; i++)
+ {
+ for (int i2 = 0, j = 0; i2 < 8 && j <= 3; i2 += 2, j++)
+ {
+ vertices[j].x = boxCoords[i][i2];
+ vertices[j].y = boxCoords[i][i2];
+ }
+ poly.Set(vertices,3);
+ tmp.shape = &poly;
+ char debug = 'a';
+ char debug1 = 'b';
+ b->CreateFixture(&tmp);
+ }
+
+
+ */
+
 PhysBody* ModulePhysics::AddBody(int x, int y, int diameter, body_type type, float density, float restitution, bool ccd, bool isSensor)
 {
 	b2BodyDef body;
@@ -442,31 +645,6 @@ PhysBody* ModulePhysics::AddEdge(const SDL_Rect& rect, int* points, uint count)
 	return ret;
 }
 
-PhysBody* ModulePhysics::CreateGear(float density, float restitution, bool isSensor)
-{
-	//x:237 y:237: radius:26.0f
-	// Create sphere
-	int x = 237;
-	int y = 237;
-
-	b2BodyDef body;
-	body.type = b2_dynamicBody;
-	body.position.Set(PIXEL_TO_METERS(237), PIXEL_TO_METERS(237));
-
-	b2CircleShape circleShape;
-	circleShape.m_radius = 26.0f;
-	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
-	/*b2BodyDef pin;
-	body_g.type = b2_staticBody;
-	int x_g = x - 15;
-	int y_g = y - 60;
-	body_g.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
-	*/
-	b2Body* b = world->CreateBody(&body);
-
-	return NULL;
-
-}
 
 void ModulePhysics::DestroyBody(PhysBody* body)
 {
