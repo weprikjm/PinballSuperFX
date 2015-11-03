@@ -1,6 +1,6 @@
 #pragma once
 #include "PugiXml\src\pugixml.hpp"
-
+#include "Module.h"
 struct SDL_RWops;
 
 int close_sdl_rwops(SDL_RWops *rw);

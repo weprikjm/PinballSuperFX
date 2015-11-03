@@ -1,14 +1,12 @@
 #include "p2Defs.h"
 #include "Application.h"
 #include "j1FileSystem.h"
-#include "PhysFS/include/physfs.h"
+#include "physfs.h"
 #include "SDL/include/SDL.h"
 #include "p2Log.h"
 
-#include "Module.h"
+//#include "Module.h"
 #pragma comment( lib, "PhysFS/libx86/physfs.lib" )
-
-
 
 
 
@@ -21,7 +19,7 @@ j1FileSystem::j1FileSystem(Application* app, bool start_enabled) : Module(app, s
 	// need to be created before Awake so other modules can use it
 	char* base_path = SDL_GetBasePath();
 	PHYSFS_init(base_path);
-	SDL_free(base_path);
+//	SDL_free(base_path);
 
 	// By default we include executable's own directory
 	// without this we won't be able to find config.xml :-(
