@@ -357,17 +357,24 @@ b2Body* ModulePhysics::CreateGear(float density, float restitution, bool isSenso
 	circle_b->SetGravityScale(0.0f);
 
 	//Create boxes
-	b2FixtureDef boxFix;
-
+	b2FixtureDef boxFix1;
 	b2PolygonShape box1;
 	//237-204 = 33
 	box1.SetAsBox(PIXEL_TO_METERS(5), PIXEL_TO_METERS(8), { 0, PIXEL_TO_METERS(33) }, 0);
-	
-	boxFix.shape = &box1;
-	boxFix.density = 1.0f;
+	boxFix1.shape = &box1;
+	boxFix1.density = 1.0f;
 
-	circle_b->CreateFixture(&boxFix);
-	
+	circle_b->CreateFixture(&boxFix1);	
+	//--------------------------
+	b2FixtureDef boxFix2;
+	b2PolygonShape box2;
+	//260,213
+	//45 degrees
+	box2.SetAsBox(PIXEL_TO_METERS(5), PIXEL_TO_METERS(8), { PIXEL_TO_METERS((237 - 260)), PIXEL_TO_METERS((237 - 213)) }, 0.7853f);
+	boxFix2.shape = &box2;
+	boxFix2.density = 1.0f;
+
+	circle_b->CreateFixture(&boxFix2);
 
 	//Create Pin
 	b2BodyDef body_pin;
@@ -377,6 +384,7 @@ b2Body* ModulePhysics::CreateGear(float density, float restitution, bool isSenso
 	int y_g = y - 60;
 	body_pin.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
+	
 	pin_b = world->CreateBody(&body_pin);
 
 	b2PolygonShape pinBox;
@@ -387,6 +395,8 @@ b2Body* ModulePhysics::CreateGear(float density, float restitution, bool isSenso
 	fixture_g.density = 1.0f;
 
 	pin_b->CreateFixture(&fixture_g);
+
+
 
 	b2RevoluteJointDef jointDef;
 	jointDef.bodyB = circle_b;
@@ -490,7 +500,8 @@ b2Body* ModulePhysics::CreateGear(float density, float restitution, bool isSenso
  233, 211,
  vertices[0].Set(240, 199);
  vertices[1].Set(233, 199);
- vertices[2].Set(233, 211);
+ vertices[2].Set(233, 211);
+
  b2FixtureDef tmp;
 
  for (int i = 0; i < 8; i++)
