@@ -428,7 +428,7 @@ b2Body* ModulePhysics::CreateGear(float density, float restitution, bool isSenso
 	b2FixtureDef boxFix8;
 	b2PolygonShape box8;
 
-	box8.SetAsBox(PIXEL_TO_METERS(5), PIXEL_TO_METERS(8), { PIXEL_TO_METERS((237 - 203)), PIXEL_TO_METERS((0)) }, 5.4978f);//315 degrees
+	box8.SetAsBox(PIXEL_TO_METERS(5), PIXEL_TO_METERS(8), { PIXEL_TO_METERS((237 - 212)), PIXEL_TO_METERS((237 - 213)) }, 5.4978f);//315 degrees
 	boxFix8.shape = &box8;
 	boxFix8.density = 1.0f;
 
