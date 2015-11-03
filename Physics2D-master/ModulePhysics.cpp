@@ -323,7 +323,7 @@ b2Vec2* ModulePhysics::CreateGearBoxes(const int* _array, b2Vec2* & toFill)
 	return NULL;
 
 }*/
-b2Body* ModulePhysics::CreateGear(float density, float restitution, bool isSensor)
+PhysBody* ModulePhysics::CreateGear(float density, float restitution, bool isSensor)
 {
 	
 	/*
@@ -335,8 +335,9 @@ b2Body* ModulePhysics::CreateGear(float density, float restitution, bool isSenso
 	//Create Gear squares
 	
 	b2BodyDef body_circle;
-	b2Body* circle_b;
-
+	//b2Body bodytmp;
+	PhysBody* circle_b = NULL;
+	circle_b = new PhysBody;
 
 	// Create sphere
 	int x = 237;
@@ -352,9 +353,9 @@ b2Body* ModulePhysics::CreateGear(float density, float restitution, bool isSenso
 	circleFix.shape = &circleShape;
 	circleFix.density = 1.0f;
 
-	circle_b = world->CreateBody(&body_circle);
-	circle_b->CreateFixture(&circleFix);
-	circle_b->SetGravityScale(0.0f);
+	circle_b->body = world->CreateBody(&body_circle);
+	circle_b->body->CreateFixture(&circleFix);
+	circle_b->body->SetGravityScale(0.0f);
 
 	//Create boxes
 	b2FixtureDef boxFix1;
@@ -364,7 +365,7 @@ b2Body* ModulePhysics::CreateGear(float density, float restitution, bool isSenso
 	boxFix1.shape = &box1;
 	boxFix1.density = 1.0f;
 
-	circle_b->CreateFixture(&boxFix1);	
+	circle_b->body->CreateFixture(&boxFix1);	
 	//--------------------------
 	b2FixtureDef boxFix2;
 	b2PolygonShape box2;
@@ -374,7 +375,7 @@ b2Body* ModulePhysics::CreateGear(float density, float restitution, bool isSenso
 	boxFix2.shape = &box2;
 	boxFix2.density = 1.0f;
 
-	circle_b->CreateFixture(&boxFix2);
+	circle_b->body->CreateFixture(&boxFix2);
 
 	//--------------------------
 	b2FixtureDef boxFix3;
@@ -385,7 +386,7 @@ b2Body* ModulePhysics::CreateGear(float density, float restitution, bool isSenso
 	boxFix3.shape = &box3;
 	boxFix3.density = 1.0f;
 
-	circle_b->CreateFixture(&boxFix3);
+	circle_b->body->CreateFixture(&boxFix3);
 
 	//--------------------------
 	b2FixtureDef boxFix4;
@@ -395,7 +396,7 @@ b2Body* ModulePhysics::CreateGear(float density, float restitution, bool isSenso
 	boxFix4.shape = &box4;
 	boxFix4.density = 1.0f;
 
-	circle_b->CreateFixture(&boxFix4);
+	circle_b->body->CreateFixture(&boxFix4);
 
 	//--------------------------
 	b2FixtureDef boxFix5;
@@ -405,7 +406,7 @@ b2Body* ModulePhysics::CreateGear(float density, float restitution, bool isSenso
 	boxFix5.shape = &box5;
 	boxFix5.density = 1.0f;
 
-	circle_b->CreateFixture(&boxFix5);
+	circle_b->body->CreateFixture(&boxFix5);
 	//--------------------------
 	b2FixtureDef boxFix6;
 	b2PolygonShape box6;
@@ -414,7 +415,7 @@ b2Body* ModulePhysics::CreateGear(float density, float restitution, bool isSenso
 	boxFix6.shape = &box6;
 	boxFix6.density = 1.0f;
 
-	circle_b->CreateFixture(&boxFix6);
+	circle_b->body->CreateFixture(&boxFix6);
 	//--------------------------
 	b2FixtureDef boxFix7;
 	b2PolygonShape box7;
@@ -423,7 +424,7 @@ b2Body* ModulePhysics::CreateGear(float density, float restitution, bool isSenso
 	boxFix7.shape = &box7;
 	boxFix7.density = 1.0f;
 
-	circle_b->CreateFixture(&boxFix7);
+	circle_b->body->CreateFixture(&boxFix7);
 	//--------------------------
 	b2FixtureDef boxFix8;
 	b2PolygonShape box8;
@@ -432,7 +433,7 @@ b2Body* ModulePhysics::CreateGear(float density, float restitution, bool isSenso
 	boxFix8.shape = &box8;
 	boxFix8.density = 1.0f;
 
-	circle_b->CreateFixture(&boxFix8);
+	circle_b->body->CreateFixture(&boxFix8);
 	//--------------------------
 	//Create Pin
 	b2BodyDef body_pin;
@@ -455,9 +456,9 @@ b2Body* ModulePhysics::CreateGear(float density, float restitution, bool isSenso
 
 
 	b2RevoluteJointDef jointDef;
-	jointDef.bodyB = circle_b;
+	jointDef.bodyB = circle_b->body;
 	jointDef.bodyA = pin_b;
-	jointDef.Initialize(circle_b, pin_b, pin_b->GetWorldCenter());
+	jointDef.Initialize(circle_b->body, pin_b, pin_b->GetWorldCenter());
 	jointDef.collideConnected = false;
 
 	//jointDef.enableLimit = true;

@@ -23,7 +23,7 @@ enum body_type
 class PhysBody
 {
 public:
-
+	PhysBody(){}
 	PhysBody(b2Body* body, const SDL_Rect& rect, body_type type);
 	~PhysBody();
 
@@ -63,7 +63,7 @@ public:
 	PhysBody* AddBody(int x, int y, int diameter, body_type type = b_dynamic, float density = 1.0f, float restitution = 0.0f, bool ccd = false, bool isSensor = false);
 	PhysBody* AddBody(const SDL_Rect& rect, int* points, uint count, body_type type = b_dynamic, float density = 1.0f, float restitution = 0.0f, bool isSensor = false);
 	PhysBody* AddEdge(const SDL_Rect& rect, int* points, uint count);
-	b2Body* CreateGear(float density = 1.0f, float restitution = 0.0f, bool isSensor = false);
+	PhysBody* CreateGear(float density = 1.0f, float restitution = 0.0f, bool isSensor = false);
 	//void CreateGearBoxes(const int* _array, b2Vec2* & toFill);
 	
 	void CreateRevoluteJoint(PhysBody* body_1, PhysBody* body_2, int x_pivot_1 = 0, int y_pivot_1 = 0, int x_pivot_2 = 0, int y_pivot_2 = 0, int max_angle = INT_MAX, int min_angle = INT_MIN);

@@ -31,7 +31,7 @@ bool ModulePlayer::Start()
 	spring.graphic = App->textures->Load("pinball/spring.png");
 	spring.fx = App->audio->LoadFx("pinball/spring.wav");
 	
-
+	metalGear.graphic = App->textures->Load("pinball/gear.png");
 	
 	b2Vec2 ballPosInit;
 	ballPosInit.y = 582;
@@ -120,7 +120,7 @@ bool ModulePlayer::Start()
 	spring_wheel = App->physics->AddBody(476, 650, 10, b_static);
 	App->physics->CreateLineJoint(spring.body, spring_wheel, 0, 0, 0, 0, 20.0f, 1.0f);
 	
-	/*metalGear.body->body = */App->physics->CreateGear();
+	metalGear.body = App->physics->CreateGear();
 
 
 
@@ -209,6 +209,11 @@ update_status ModulePlayer::Update()
 	spring.body->GetPosition(x, y);
 	App->renderer->Blit(spring.graphic, x, y, NULL, 1.0f, spring.body->GetAngle());
 	
+	metalGear.body->GetPosition(x,y);
+	App->renderer->Blit(metalGear.graphic, x-52, y-52, NULL, 1.0f, metalGear.body->GetAngle());
+
+
+
 	return UPDATE_CONTINUE;
 }
 
