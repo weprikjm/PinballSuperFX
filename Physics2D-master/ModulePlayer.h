@@ -49,5 +49,6 @@ public:
 	int score;
 	int globalScore;
 
+	Object metalGear;
 
 };

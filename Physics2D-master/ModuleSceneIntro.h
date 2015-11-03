@@ -89,4 +89,6 @@ public:
 
 	Mix_Chunk sceneMusic;
 
+	Object metalGear;
+
 };

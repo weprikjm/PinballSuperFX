@@ -31,7 +31,7 @@ bool ModulePlayer::Start()
 	spring.graphic = App->textures->Load("pinball/spring.png");
 	spring.fx = App->audio->LoadFx("pinball/spring.wav");
 	
-	metalGear.graphic = App->textures->Load("pinball/gear.png");
+	
 	
 	b2Vec2 ballPosInit;
 	ballPosInit.y = 582;
@@ -80,7 +80,7 @@ bool ModulePlayer::Start()
 		12, 2,
 		25, 11,
 		45, 26,
-		63, 42,
+		60, 42,
 		53, 40,
 		26, 29,
 		6, 17,
@@ -120,7 +120,7 @@ bool ModulePlayer::Start()
 	spring_wheel = App->physics->AddBody(476, 650, 10, b_static);
 	App->physics->CreateLineJoint(spring.body, spring_wheel, 0, 0, 0, 0, 20.0f, 1.0f);
 	
-	metalGear.body = App->physics->CreateGear();
+	
 
 
 
@@ -164,14 +164,14 @@ update_status ModulePlayer::Update()
 
 	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 	{
-		flipper1.body->Turn(-180);
-		flipper_up1.body->Turn(-180);
+		flipper1.body->Turn(-90);
+		flipper_up1.body->Turn(-90);
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 	{
-		flipper2.body->Turn(180);
-		flipper_up2.body->Turn(180);
+		flipper2.body->Turn(90);
+		flipper_up2.body->Turn(90);
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
@@ -209,8 +209,7 @@ update_status ModulePlayer::Update()
 	spring.body->GetPosition(x, y);
 	App->renderer->Blit(spring.graphic, x, y, NULL, 1.0f, spring.body->GetAngle());
 	
-	metalGear.body->GetPosition(x,y);
-	App->renderer->Blit(metalGear.graphic, x-52, y-52, NULL, 1.0f, metalGear.body->GetAngle());
+
 
 
 

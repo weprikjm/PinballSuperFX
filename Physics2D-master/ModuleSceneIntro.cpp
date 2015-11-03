@@ -33,7 +33,8 @@ bool ModuleSceneIntro::Start()
 	bouncer1.fx = bouncer2.fx = bouncer3.fx = bouncer4.fx = bouncer5.fx = bouncer6.fx = bouncer7.fx = App->audio->LoadFx("pinball/ring.wav");
 	bouncer8.fx = bouncer9.fx = App->audio->LoadFx("pinball/ring.wav");
 	App->audio->PlayMusic("pinball/ramiSong.ogg");
-	
+	metalGear.graphic = App->textures->Load("pinball/gear.png");
+
 	/*
 	player_lose_fx = App->audio->LoadFx("pinball/long_bonus.wav");
 	*/
@@ -86,7 +87,7 @@ bool ModuleSceneIntro::Start()
 	SDL_Rect bs2 = { 125, 484, 0, 0 };
 	bouncer9.body = App->physics->AddBody(bs2, bouncerSide2, 10, b_static,1.0f, 1.5f);
 
-
+	metalGear.body = App->physics->CreateGear();
 
 	return ret;
 }
@@ -207,6 +208,11 @@ update_status ModuleSceneIntro::Update()
 
 
 	p2SString title("Lives: %d Score: %d Global Score: %d", App->player->lives,App->player->score, App->player->globalScore);//TODO GETTERS
+
+	int x, y;
+
+	metalGear.body->GetPosition(x, y);
+	App->renderer->Blit(metalGear.graphic, x - 52, y - 52, NULL, 1.0f, metalGear.body->GetAngle());
 
 
 	App->window->SetTitle(title.GetString()); 
