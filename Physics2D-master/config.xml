@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+ <config> 
+  <app>
+  <title/>Super Pinball FX
+  <organization/>Blissful Company
+  </app>
+   
+     <player TopScore="0"></player>
+
+    
+   
+</config>

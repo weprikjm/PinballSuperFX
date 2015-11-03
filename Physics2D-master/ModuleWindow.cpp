@@ -1,7 +1,8 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleWindow.h"
-
+#include "Module.h"
+//#include "PugiXml\src\pugixml.hpp"
 ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	window = NULL;
@@ -14,7 +15,7 @@ ModuleWindow::~ModuleWindow()
 }
 
 // Called before render is available
-bool ModuleWindow::Init()
+bool ModuleWindow::Init(pugi::xml_node& config)
 {
 	LOG("Init SDL window & surface");
 	bool ret = true;

@@ -1,7 +1,8 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleAudio.h"
-
+#include "PugiXml\src\pugixml.hpp"
+#include "Module.h"
 #pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
 
 ModuleAudio::ModuleAudio(Application* app, bool start_enabled) : Module(app, start_enabled), music(NULL)
@@ -12,7 +13,7 @@ ModuleAudio::~ModuleAudio()
 {}
 
 // Called before render is available
-bool ModuleAudio::Init()
+bool ModuleAudio::Init(pugi::xml_node& config)
 {
 	LOG("Loading Audio Mixer");
 	bool ret = true;

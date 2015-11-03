@@ -3,7 +3,7 @@
 #include "ModulePhysics.h"
 #include "math.h"
 #include "Box2D/Box2D/Box2D.h"
-
+#include "Module.h"
 #ifdef _DEBUG
 	#pragma comment( lib, "Box2D/libx86/Debug/Box2D.lib" )
 #else
@@ -22,7 +22,7 @@ ModulePhysics::~ModulePhysics()
 }
 
 // Called before render is available
-bool ModulePhysics::Init()
+bool ModulePhysics::Init(pugi::xml_node& config)
 {
 	//LOG("Creating Physics environment");
 	bool ret = true;

@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "ModulePlayer.h"
 #include "PhysBody.h"
+//#include "PugiXml\src\pugixml.hpp"
+#include "Module.h"
 
 ModulePlayer::ModulePlayer(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -120,23 +122,12 @@ bool ModulePlayer::Start()
 	};
 
 	
-	flipper2.body = App->physics->AddBody({ /*334*/334, 585, 0, 0 }, flipperRightU, 14, b_dynamic, 1.0f, 0.2f);
+	flipper2.body = App->physics->AddBody({334, 585, 0, 0 }, flipperRightU, 14, b_dynamic, 1.0f, 0.2f);
 	flipper2_wheel = App->physics->AddBody(334, 585, 3, b_static);
 	App->physics->CreateRevoluteJoint(flipper2.body, flipper2_wheel, 50, 0, 0, 0, 0, -60);
 	
 	
-	
-	
 
-
-
-	/*
-	
-	
-	
-	
-	
-	*/
 	
 	
 	
@@ -144,17 +135,7 @@ bool ModulePlayer::Start()
 	
 
 	
-	
-	
-	
-	/*
-	
-	int Capture[4] = {
-		482, 697,
-		496, 697
-	};
 
-	*/
 	
 	spring.body = App->physics->AddBody({486, 900, 15, 65}, b_dynamic);
 	spring_wheel = App->physics->AddBody(476, 650, 10, b_static);
@@ -342,15 +323,28 @@ void ModulePlayer::ballBlit()
 	int x, y;
 
 	ball.body->GetPosition(x, y);
+	
 	//this->ballPosInit.x;
 	//this->ballPosInit.y;
 	if (y > 900)
 	{
 		ball.body->SetPosition(502, 582);
+		ball.body->SetLinearSpeed(0, 0);
 		x = 598;
 		y = 575;
 		App->audio->PlayFx(spring.fx);
 		lives--;
+		globalScore += score;
+		score = 0;
+
+		if (lives == 0)//XML SAVE
+		{
+			lives = 2;
+			score = 0;
+			//xmlNode = globalScore
+			globalScore = 0;
+		}
+
 	}
 	App->renderer->Blit(ball.graphic, x, y, NULL, 1.0f);
 

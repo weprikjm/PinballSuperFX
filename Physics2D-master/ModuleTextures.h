@@ -9,7 +9,7 @@ public:
 	ModuleTextures(Application* app, bool start_enabled = true);
 	~ModuleTextures();
 
-	bool Init();
+	bool Init(pugi::xml_node& config);
 	bool CleanUp();
 
 	SDL_Texture* const Load(const char* path);

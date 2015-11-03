@@ -1,7 +1,8 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
-
+#include "PugiXml\src\pugixml.hpp"
+#include "Module.h"
 #define MAX_KEYS 300
 
 ModuleInput::ModuleInput(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -17,7 +18,7 @@ ModuleInput::~ModuleInput()
 }
 
 // Called before render is available
-bool ModuleInput::Init()
+bool ModuleInput::Init(pugi::xml_node& config)
 {
 	LOG("Init SDL input event system");
 	bool ret = true;

@@ -1,5 +1,5 @@
 #pragma once
-#include "Module.h"
+
 #include "Animation.h"
 #include "p2DynArray.h"
 #include "Globals.h"
@@ -62,6 +62,11 @@ public:
 
 	Bouncer bouncer1;
 	Bouncer bouncer2;
+	Bouncer bouncer3;
+	Bouncer bouncer4;
+	Bouncer bouncer5;
+	Bouncer bouncer6;
+	Bouncer bouncer7;
 
 	Bouncer side_bouncer1;
 	Bouncer side_bouncer2;

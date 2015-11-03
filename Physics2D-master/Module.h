@@ -1,5 +1,7 @@
 #pragma once
-
+#include "p2SString.h"
+#include "Application.h"
+#include "PugiXml\src\pugixml.hpp"
 class Application;
 class PhysBody;
 
@@ -7,9 +9,10 @@ class Module
 {
 private :
 	bool enabled;
-
+	
 public:
 	Application* App;
+	p2SString name;
 
 	Module(Application* parent, bool start_enabled = true) : App(parent), enabled(start_enabled)
 	{}
@@ -40,7 +43,7 @@ public:
 		}
 	}
 
-	virtual bool Init() 
+	virtual bool Init(pugi::xml_node&) 
 	{
 		return true; 
 	}

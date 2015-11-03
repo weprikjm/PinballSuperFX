@@ -1,5 +1,5 @@
 #pragma once
-#include "Module.h"
+
 #include "Globals.h"
 
 #define MAX_MOUSE_BUTTONS 5
@@ -21,7 +21,7 @@ public:
 	ModuleInput(Application* app, bool start_enabled = true);
 	~ModuleInput();
 
-	bool Init();
+	bool Init(pugi::xml_node& config);
 	update_status PreUpdate();
 	bool CleanUp();
 

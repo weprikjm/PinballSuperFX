@@ -1,7 +1,7 @@
 #ifndef __ModuleWindow_H__
 #define __ModuleWindow_H__
 
-#include "Module.h"
+
 #include "SDL/include/SDL.h"
 
 class Application;
@@ -15,7 +15,7 @@ public:
 	// Destructor
 	virtual ~ModuleWindow();
 
-	bool Init();
+	bool Init(pugi::xml_node& config);
 	bool CleanUp();
 
 	void SetTitle(const char* title);

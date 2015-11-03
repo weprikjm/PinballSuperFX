@@ -2,7 +2,7 @@
 
 #include "p2List.h"
 #include "Globals.h"
-#include "Module.h"
+
 #include "Dummy.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
@@ -12,8 +12,11 @@
 #include "ModulePlayer.h"
 #include "ModulePhysics.h"
 #include "ModuleSceneIntro.h"
-
+#include "j1FileSystem.h"
+#include "PugiXml\src\pugixml.hpp"
 #pragma comment (lib,"Box2D/libx86/Debug/Box2D.lib")
+
+class Module;
 
 class Application
 {
@@ -26,20 +29,25 @@ public:
 	ModulePlayer* player;
 	ModuleSceneIntro* scene_intro;
 	ModulePhysics* physics;
+	j1FileSystem* file;
 
 private:
 
 	p2List<Module*> list_modules;
-
+	p2SString			title;
+	p2SString			organization;
 public:
 
 	Application();
 	~Application();
 
+	// Load config file
+	pugi::xml_node LoadConfig(pugi::xml_document&) const;
+	const char* GetOrganization() const;
 	bool Init();
 	update_status Update();
 	bool CleanUp();
-
+	const char*GetTitle() const;
 private:
 
 	void AddModule(Module* mod);

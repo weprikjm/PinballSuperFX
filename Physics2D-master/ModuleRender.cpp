@@ -1,7 +1,8 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRender.h"
-
+//#include "PugiXml\src\pugixml.hpp"
+#include "Module.h"
 ModuleRender::ModuleRender(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	renderer = NULL;
@@ -15,7 +16,7 @@ ModuleRender::~ModuleRender()
 {}
 
 // Called before render is available
-bool ModuleRender::Init()
+bool ModuleRender::Init(pugi::xml_node& config)
 {
 	LOG("Creating Renderer context");
 	bool ret = true;

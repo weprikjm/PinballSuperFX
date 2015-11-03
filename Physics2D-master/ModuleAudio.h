@@ -1,7 +1,7 @@
 #ifndef __ModuleAudio_H__
 #define __ModuleAudio_H__
 
-#include "Module.h"
+
 #include "SDL_mixer\include\SDL_mixer.h"
 
 #define DEFAULT_MUSIC_FADE_TIME 2.0f
@@ -13,7 +13,7 @@ public:
 	ModuleAudio(Application* app, bool start_enabled = true);
 	~ModuleAudio();
 
-	bool Init();
+	bool Init(pugi::xml_node& config);
 	bool CleanUp();
 
 	// Play a music file
