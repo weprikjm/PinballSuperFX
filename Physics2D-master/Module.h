@@ -1,6 +1,6 @@
 #pragma once
 #include "p2SString.h"
-#include "Application.h"
+//#include "Application.h"
 #include "PugiXml\src\pugixml.hpp"
 class Application;
 class PhysBody;

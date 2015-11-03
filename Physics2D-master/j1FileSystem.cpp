@@ -3,7 +3,6 @@
 #include "j1FileSystem.h"
 #include "PhysFS/include/physfs.h"
 #include "SDL/include/SDL.h"
-#include "PugiXml\src\pugixml.hpp"
 #include "p2Log.h"
 
 #include "Module.h"

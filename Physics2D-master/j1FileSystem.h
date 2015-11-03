@@ -1,5 +1,5 @@
 #pragma once
-
+#include "PugiXml\src\pugixml.hpp"
 
 struct SDL_RWops;
 

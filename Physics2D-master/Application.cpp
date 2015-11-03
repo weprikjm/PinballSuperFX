@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "Module.h"
+#include "PugiXml\src\pugixml.hpp"
 Application::Application()
 {
 	renderer = new ModuleRender(this);

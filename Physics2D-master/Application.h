@@ -1,4 +1,10 @@
-#pragma once
+#ifndef __APPLICATION_H__
+#define __APPLICATION_H__
+
+
+
+#include "PugiXml\src\pugixml.hpp"
+
 
 #include "p2List.h"
 #include "Globals.h"
@@ -13,7 +19,7 @@
 #include "ModulePhysics.h"
 #include "ModuleSceneIntro.h"
 #include "j1FileSystem.h"
-#include "PugiXml\src\pugixml.hpp"
+//
 #pragma comment (lib,"Box2D/libx86/Debug/Box2D.lib")
 
 class Module;
@@ -52,3 +58,7 @@ private:
 
 	void AddModule(Module* mod);
 };
+
+extern Application* App;
+
+#endif

@@ -1,7 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleAudio.h"
-#include "PugiXml\src\pugixml.hpp"
+//#include "PugiXml\src\pugixml.hpp"
 #include "Module.h"
 #pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
 
