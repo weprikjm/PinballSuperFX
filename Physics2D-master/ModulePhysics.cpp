@@ -38,6 +38,9 @@ bool ModulePhysics::Start()
 	world = new b2World(b2Vec2(GRAVITY_X, -GRAVITY_Y));
 	world->SetContactListener(this);
 
+	b2BodyDef test;
+	ground = world->CreateBody(&test);
+
 	return true;
 }
 
@@ -75,9 +78,8 @@ update_status ModulePhysics::PostUpdate()
 	if(App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
 
-	/*if(!debug)
-		return UPDATE_CONTINUE;*/
-	debug = true;
+	if(!debug)
+		return UPDATE_CONTINUE;
 	// get center
 	for(b2Body* b = world->GetBodyList(); b; b = b->GetNext())
 	{
@@ -159,7 +161,7 @@ update_status ModulePhysics::PostUpdate()
 				mouse_position.y = PIXEL_TO_METERS(App->input->GetMouseY());
 				if (f->GetShape()->TestPoint(b->GetTransform(), mouse_position) == true)
 				{
-					body_clicked = (PhysBody*)b->GetUserData();
+					body_clicked = f->GetBody();
 				}
 			}
 				
@@ -167,50 +169,58 @@ update_status ModulePhysics::PostUpdate()
 		}
 	}
 
-	if (body_clicked != NULL)
+	if (body_clicked != NULL && body_clicked->GetType() != b2_kinematicBody)
 	{
-		b2BodyDef test;
+	
 		b2MouseJointDef def;
-		test.type = b2_staticBody;
 		if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
 		{
 			char debug = 'a';
 		}
-		b2Body * wut = world->CreateBody(&test);
-		def.bodyA = wut;
-		def.bodyB = body_clicked->body;
+		
+		def.bodyA = ground;
+		def.bodyB = body_clicked;
 		def.target = mouse_position;
 		def.dampingRatio = 0.5f;
-		def.frequencyHz = 2.0f;
-		def.maxForce = 100.0f * body_clicked->body->GetMass();
+		def.frequencyHz = 1.250f;
+		def.maxForce = 25.0f * body_clicked->GetMass();
 
 		mouse_joint = (b2MouseJoint*)world->CreateJoint(&def);
 	
-		int wat = App->input->GetMouseButton(SDL_BUTTON_LEFT);
-		if ( wat != KEY_IDLE )
-		{
-			/*def.target.x = PIXEL_TO_METERS(App->input->GetMouseX());
-			def.target.y = PIXEL_TO_METERS(App->input->GetMouseY());*/
-
-			mouse_joint->SetTarget(mouse_position);
-			b2Vec2 clickPos;
-			clickPos= body_clicked->body->GetLocalCenter();
-			App->renderer->DrawLine(METERS_TO_PIXELS(init_position.x),
-				METERS_TO_PIXELS(init_position.y),
-				METERS_TO_PIXELS(mouse_position.x),
-				METERS_TO_PIXELS(mouse_position.y),
-				255, 0, 0);
-		}
-
-		else
-		{
-			world->DestroyJoint(mouse_joint);
-			mouse_joint = NULL;
-			body_clicked = NULL;
-		}
-
+		body_clicked = NULL;
 		// TODO 3: If the player keeps pressing the mouse button, update
 		// target position and draw a red line between both anchor points
+	}
+	int wat = App->input->GetMouseButton(SDL_BUTTON_LEFT);
+	if (mouse_joint != NULL && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	{
+	
+
+		/*def.target.x = PIXEL_TO_METERS(App->input->GetMouseX());
+		def.target.y = PIXEL_TO_METERS(App->input->GetMouseY());*/
+		b2Vec2 pos_A, pos_B;
+		pos_A = mouse_joint->GetAnchorB();
+		pos_B.x = PIXEL_TO_METERS(App->input->GetMouseX());
+		pos_B.y = PIXEL_TO_METERS(App->input->GetMouseY());
+		
+		mouse_joint->SetTarget(pos_B);
+
+		if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
+		{
+			char debug = 'a';
+		}
+		App->renderer->DrawLine(METERS_TO_PIXELS(pos_A.x),	METERS_TO_PIXELS(pos_A.y),METERS_TO_PIXELS(pos_B.x),	METERS_TO_PIXELS(pos_B.y),255, 0, 0);
+	}
+
+	if (mouse_joint != NULL && App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_IDLE)
+	{
+		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+		{
+			char debug = 'a';
+		}
+
+		world->DestroyJoint(mouse_joint);
+		mouse_joint = NULL;
 	}
 	return UPDATE_CONTINUE;
 }
@@ -430,6 +440,32 @@ PhysBody* ModulePhysics::AddEdge(const SDL_Rect& rect, int* points, uint count)
 	b->SetUserData(ret);
 
 	return ret;
+}
+
+PhysBody* ModulePhysics::CreateGear(float density, float restitution, bool isSensor)
+{
+	//x:237 y:237: radius:26.0f
+	// Create sphere
+	int x = 237;
+	int y = 237;
+
+	b2BodyDef body;
+	body.type = b2_dynamicBody;
+	body.position.Set(PIXEL_TO_METERS(237), PIXEL_TO_METERS(237));
+
+	b2CircleShape circleShape;
+	circleShape.m_radius = 26.0f;
+	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+	/*b2BodyDef pin;
+	body_g.type = b2_staticBody;
+	int x_g = x - 15;
+	int y_g = y - 60;
+	body_g.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+	*/
+	b2Body* b = world->CreateBody(&body);
+
+	return NULL;
+
 }
 
 void ModulePhysics::DestroyBody(PhysBody* body)

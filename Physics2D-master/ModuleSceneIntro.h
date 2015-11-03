@@ -62,6 +62,14 @@ public:
 
 	Bouncer bouncer1;
 	Bouncer bouncer2;
+	Bouncer bouncer3;
+	Bouncer bouncer4;
+	Bouncer bouncer5;
+	Bouncer bouncer6;
+	Bouncer bouncer7;
+
+	Bouncer bouncer8;
+	Bouncer bouncer9;
 
 	Bouncer side_bouncer1;
 	Bouncer side_bouncer2;
@@ -78,5 +86,7 @@ public:
 
 	PhysBody* player_lose;
 	uint player_lose_fx;
+
+	Mix_Chunk sceneMusic;
 
 };
