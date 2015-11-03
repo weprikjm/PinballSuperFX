@@ -132,8 +132,6 @@ bool ModulePlayer::CleanUp()
 {
 	LOG("Unloading player");
 
-	return true;
-
 	App->textures->Unload(ball.graphic);
 	App->textures->Unload(flipper1.graphic);
 	App->textures->Unload(flipper2.graphic);
@@ -145,6 +143,7 @@ bool ModulePlayer::CleanUp()
 	App->physics->DestroyBody(flipper1.body);
 	App->physics->DestroyBody(flipper2.body);
 	App->physics->DestroyBody(spring.body);
+	//App->physics->DestroyBody(
 	return true;
 }
 

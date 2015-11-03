@@ -461,12 +461,11 @@ b2Body* ModulePhysics::CreateGear(float density, float restitution, bool isSenso
 	jointDef.collideConnected = false;
 
 	//jointDef.enableLimit = true;
-	jointDef.maxMotorTorque = 0.1f;
+	jointDef.maxMotorTorque = 0.25f;
 	jointDef.motorSpeed = 0.0f;
 	jointDef.enableMotor = true;
 
 	b2RevoluteJoint* joint = (b2RevoluteJoint*)world->CreateJoint(&jointDef);
-
 	return circle_b;
 
 }
