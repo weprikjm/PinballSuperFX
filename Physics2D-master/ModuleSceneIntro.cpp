@@ -238,6 +238,7 @@ void ModuleSceneIntro::OnCollision(PhysBody* body1, PhysBody* body2)
 	{
 		bouncer2.hit_timer = SDL_GetTicks() + BOUNCER_TIME;
 		App->audio->PlayFx(bouncer2.fx);
+		App->player->score += 50;
 		return;
 	}
 
